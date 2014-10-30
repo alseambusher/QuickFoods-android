@@ -39,7 +39,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
         AutoCompleteTextView take_order_add_item= (AutoCompleteTextView)
                 view.findViewById(R.id.take_order_add_item);
         take_order_add_item.setAdapter(adapter);
-		
+
 		return view;
 	}
 	

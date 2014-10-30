@@ -12,6 +12,7 @@
         <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_quickfoods</item>
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Quickfoods</item>
         <item name="android:buttonStyle">@style/Theme.QuickFoods.button</item>
+        <item name="android:fontFamily">sans-serif-thin</item>
     </style>
 
 
