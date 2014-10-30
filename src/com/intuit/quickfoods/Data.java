@@ -16,7 +16,8 @@ public class Data {
 	
 	// colors
 	public static int nav_drawer_text_color = Color.BLACK;
-	
+
+	// TODO load this from db
 	public static String[] food_items= new String[] {
 	         "Veg Manchow Soup",
 	         "Gobi Manchurian",

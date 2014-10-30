@@ -42,4 +42,8 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
 		
 		return view;
 	}
+	
+	public void refreshItemList(){
+		// TODO
+	}
 }

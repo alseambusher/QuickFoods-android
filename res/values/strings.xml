@@ -12,5 +12,7 @@
     <string name="sync">Sync</string>
     <string name="title_activity_items">ItemsActivity</string>
     <string name="hello_world">Hello world!</string>
+    <color name="white">#ffff</color>
+    <color name="button">#1284ff</color>
 
 </resources>

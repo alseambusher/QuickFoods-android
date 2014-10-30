@@ -32,7 +32,7 @@
             <EditText
                 android:id="@+id/take_order_table_no"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="0.71"
                 android:ems="10"
                 android:hint="Table No."
