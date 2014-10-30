@@ -23,16 +23,15 @@
         android:orientation="vertical"
         android:paddingLeft="0dp" >
 
-        <SearchView
-            android:id="@+id/searchView1"
+        <AutoCompleteTextView
+            android:id="@+id/search_items"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:iconifiedByDefault="false"
-            android:queryHint="Search Items"
-            android:contentDescription="Search items"
-            android:visibility="visible" >
+            android:ems="10"
+            android:hint="Search Items" >
 
-        </SearchView>
+            <requestFocus />
+        </AutoCompleteTextView>
 
         <ScrollView
             android:id="@+id/scrollView1"

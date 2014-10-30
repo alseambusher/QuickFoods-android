@@ -51,28 +51,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
-            <SearchView
-                android:id="@+id/searchView1"
+            <AutoCompleteTextView
+                android:id="@+id/take_order_add_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.97"
-                android:contentDescription="Search items"
-                android:iconifiedByDefault="false"
-                android:queryHint="Item"
-                android:visibility="visible" >
-
-            </SearchView>
+                android:ems="10"
+                android:hint="Item" />
 
             <EditText
                 android:id="@+id/editText3"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
+                android:layout_weight="0.97"
                 android:ems="10"
                 android:inputType="number"
                 android:text="1" >
 
                 <requestFocus />
             </EditText>
+
         </LinearLayout>
 
         <Button

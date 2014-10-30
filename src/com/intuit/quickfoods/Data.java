@@ -16,5 +16,14 @@ public class Data {
 	
 	// colors
 	public static int nav_drawer_text_color = Color.BLACK;
+	
+	public static String[] food_items= new String[] {
+	         "Veg Manchow Soup",
+	         "Gobi Manchurian",
+	         "Chilly Chicken",
+	         "Paneer Butter Masala",
+	         "Chicken Butter Masala",
+	         "Pepsi"
+	};
 
 }

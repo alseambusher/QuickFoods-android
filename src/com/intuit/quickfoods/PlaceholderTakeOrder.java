@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +33,12 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
 				Toast.makeText(getActivity(), "Loading Table "+table_no_value, Toast.LENGTH_SHORT).show();
 			}
 		});
+		
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_dropdown_item_1line, Data.food_items);
+        AutoCompleteTextView take_order_add_item= (AutoCompleteTextView)
+                view.findViewById(R.id.take_order_add_item);
+        take_order_add_item.setAdapter(adapter);
 		
 		return view;
 	}

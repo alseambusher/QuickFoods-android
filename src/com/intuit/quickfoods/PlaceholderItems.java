@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 
 public class PlaceholderItems extends PlaceholderBase {
 	
@@ -14,8 +16,15 @@ public class PlaceholderItems extends PlaceholderBase {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_items,
+		View view= inflater.inflate(R.layout.fragment_items,
 				container, false);
-		return rootView;
+		
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_dropdown_item_1line, Data.food_items);
+        AutoCompleteTextView search_items= (AutoCompleteTextView)
+                view.findViewById(R.id.search_items);
+        search_items.setAdapter(adapter);
+		
+		return view;
 	}
 }
