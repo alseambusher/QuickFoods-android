@@ -7,11 +7,6 @@ buildscript {
     }
 }
 apply plugin: 'android'
-
-dependencies {
-    compile fileTree(dir: 'libs', include: '*.jar')
-}
-
 android {
     compileSdkVersion 19
     buildToolsVersion "20.0.0"
@@ -38,5 +33,9 @@ android {
         // by a similar customization.
         debug.setRoot('build-types/debug')
         release.setRoot('build-types/release')
+    }
+
+    dependencies {
+        compile fileTree(dir: 'libs', include: '*.jar')
     }
 }
