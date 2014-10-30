@@ -3,14 +3,13 @@
     tools:context="com.intuit.quickfood.MainActivity" >
 
     <item
-        android:id="@+id/action_example"
+        android:id="@+id/sync_action_bar"
         android:showAsAction="withText|ifRoom"
-        android:title="@string/action_example"/>
+        android:title="@string/sync"
+        android:icon="@android:drawable/ic_popup_sync"/>
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/action_settings"/>
-    <item android:id="@+id/sync" android:title="@string/sync" android:showAsAction="never"></item>
-
 </menu>

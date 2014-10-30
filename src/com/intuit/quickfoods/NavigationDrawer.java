@@ -285,7 +285,7 @@ public class NavigationDrawer extends Fragment {
 			return true;
 		}
 
-		if (item.getItemId() == R.id.action_example) {
+		if (item.getItemId() == R.id.sync_action_bar) {
 			Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT)
 					.show();
 			return true;

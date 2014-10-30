@@ -180,13 +180,11 @@
         android:background="@color/button"
         android:gravity="center" >
 
-        <TextView
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
             android:text="Create Bill"
-            android:textColor="#ffffff"
-            android:textSize="20sp" />
+            android:id="@+id/make_bill" />
     </RelativeLayout>
 
 </RelativeLayout>
