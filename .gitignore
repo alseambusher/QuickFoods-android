@@ -41,3 +41,13 @@ local.properties
 
 # PDT-specific
 .buildpath
+
+# android studio stuff
+.idea
+build/
+.gradle
+*.swp
+*~
+*.iml
+*.ipr
+*.iws
