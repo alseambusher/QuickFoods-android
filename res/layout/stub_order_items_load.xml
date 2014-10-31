@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:paddingTop="3dp"
+    android:paddingBottom="0dp"
+    android:id="@+id/items_load"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <AutoCompleteTextView
+            android:id="@+id/take_order_add_item"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="2.53"
+            android:ems="10"
+            android:hint="Item" />
+
+        <EditText
+                android:id="@+id/editText3"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.97"
+                android:ems="10"
+                android:inputType="number"
+                android:text="1">
+
+                <requestFocus />
+            </EditText>
+
+        <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="+"
+                android:background="@drawable/round_blue_button" />
+    </LinearLayout>
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:text="Items"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        android:background="#eee"
+        android:padding="5dp" />
+
+    <ScrollView android:fillViewport="true"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp">
+        <LinearLayout android:id="@+id/dismissable_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/red_button"
+                android:text="Sumbit"
+                android:id="@+id/submit_bill"
+                android:layout_weight="0.5" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/red_button"
+                android:text="Create Bill"
+                android:id="@+id/make_bill"
+                android:layout_weight="0.5" />
+            </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

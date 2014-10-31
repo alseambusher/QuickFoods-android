@@ -66,7 +66,13 @@
     </style>
         
     <style name="Theme.QuickFoods.button" parent="@android:style/Widget.Holo.Button">
-          <item name="android:background">@color/button</item>
+          <item name="android:background">@drawable/round_blue_button</item>
+    </style>
+
+    <style name="Theme.Quickfoods.ItemListTextView" parent="@android:style/Widget.TextView">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">25dp</item>
+        <item name="android:padding">20dp</item>
     </style>
 
 </resources>
