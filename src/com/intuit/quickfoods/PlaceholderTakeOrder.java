@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class PlaceholderTakeOrder extends PlaceholderBase {
+    public View view;
 	public ViewGroup itemsContainer;
 
 	public PlaceholderTakeOrder() {
@@ -28,7 +29,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		final View view = inflater.inflate(R.layout.fragment_take_order,
+		view = inflater.inflate(R.layout.fragment_take_order,
 				container, false);
 
 		Button table_no_go = (Button) view.findViewById(R.id.button1);
@@ -45,7 +46,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                     return;
                 }
 
-                refreshFoodItemList(view);
+                refreshFoodItemList();
 			}
 		});
         return view;
@@ -95,7 +96,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
     }
 
     // Todo pass data as an argument
-    public void refreshFoodItemList(View view){
+    public void refreshFoodItemList(){
         try{
             ((ViewStub) view.findViewById(R.id.stub_import)).inflate();
         } catch (Exception e){
