@@ -1,0 +1,51 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="0dp"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:paddingTop="3dp"
+    tools:context="com.intuit.quickfoods.MainActivity$PlaceholderFragment" >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:weightSum="1">
+
+            <AutoCompleteTextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:hint="Filter"
+                android:id="@+id/filter_kitchen"
+                android:layout_weight="1" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Add"
+                android:id="@+id/add_filter_kitchen" />
+
+        </LinearLayout>
+        <ViewStub
+            android:id="@+id/stub_import_kitchen_filter"
+            android:inflatedId="@+id/stub_kitchen_filter"
+            android:layout="@layout/stub_kitchen_filter"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom" />
+        <ViewStub
+            android:id="@+id/stub_import_kitchen_items_load"
+            android:inflatedId="@+id/stub_kitchen_items_load"
+            android:layout="@layout/stub_kitchen_items_load"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom" />
+    </LinearLayout>
+</RelativeLayout>

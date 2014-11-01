@@ -5,7 +5,7 @@
     android:paddingBottom="0dp"
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
-    android:paddingTop="0dp"
+    android:paddingTop="3dp"
     tools:context="com.intuit.quickfoods.MainActivity$PlaceholderFragment" >
 
     <TextView

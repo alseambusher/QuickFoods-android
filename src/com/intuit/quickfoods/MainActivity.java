@@ -57,8 +57,20 @@ public class MainActivity extends Activity implements
 		}
 		else if (mTitle == Data.items){
 			fragmentManager.beginTransaction().replace(R.id.container,
-							new PlaceholderItems()).commit();
+                    new PlaceholderItems()).commit();
 		}
+        else if (mTitle == Data.kitchen){
+            fragmentManager.beginTransaction().replace(R.id.container,
+                    new PlaceholderKitchen()).commit();
+        }
+        else if (mTitle == Data.history){
+            fragmentManager.beginTransaction().replace(R.id.container,
+                    new PlaceholderHistory()).commit();
+        }
+        else if (mTitle == Data.kitchen){
+            fragmentManager.beginTransaction().replace(R.id.container,
+                    new PlaceholderReviews()).commit();
+        }
 		else {
 			/*
 			 * Dont remove this! Initially when no item is loaded it will take

@@ -49,8 +49,8 @@
         </LinearLayout>
 
         <ViewStub
-            android:id="@+id/stub_import"
-            android:inflatedId="@+id/panel_import"
+            android:id="@+id/stub_import_order_items_load"
+            android:inflatedId="@+id/stub_order_items_load"
             android:layout="@layout/stub_order_items_load"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

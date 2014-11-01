@@ -10,17 +10,21 @@ import android.view.ViewStub;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class PlaceholderTakeOrder extends PlaceholderBase {
     public View view;
 	public ViewGroup itemsContainer;
+    // todo change this to a object with other stuff too
+    public List<String> food_items = new ArrayList<String>();
 
 	public PlaceholderTakeOrder() {
 		super();
@@ -36,7 +40,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
 		table_no_go.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-                TextView table_no = (TextView) view.findViewById(R.id.take_order_table_no) ;
+                final TextView table_no = (TextView) view.findViewById(R.id.take_order_table_no) ;
                 try {
                     int table_no_value = Integer.parseInt(table_no.getText().toString());
                 } catch (Exception e){
@@ -46,9 +50,37 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                     return;
                 }
 
-                refreshFoodItemList();
-			}
-		});
+                try{
+                    ((ViewStub) view.findViewById(R.id.stub_import_order_items_load)).inflate();
+                } catch (Exception e){}
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+                        android.R.layout.simple_dropdown_item_1line, Data.food_items);
+                final AutoCompleteTextView take_order_add_item= (AutoCompleteTextView)
+                        view.findViewById(R.id.take_order_add_item);
+                take_order_add_item.setAdapter(adapter);
+                take_order_add_item.requestFocus();
+
+                Button add_item = (Button) view.findViewById(R.id.take_order_add_item_button);
+                add_item.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String newItemValue = take_order_add_item.getText().toString();
+                        // todo make check if item is valid
+                        if (!newItemValue.isEmpty()) {
+                            food_items.add(newItemValue);
+                            refreshFoodItemList();
+                            take_order_add_item.setText("");
+                        }
+                        else {
+                            Toast.makeText(getActivity(),
+                                    "Item invalid",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        });
         return view;
 	}
 	
@@ -94,25 +126,15 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
         }
         return food_list_item;
     }
-
     // Todo pass data as an argument
     public void refreshFoodItemList(){
-        try{
-            ((ViewStub) view.findViewById(R.id.stub_import)).inflate();
-        } catch (Exception e){
+        try {
             itemsContainer.removeAllViews();
-        }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_dropdown_item_1line, Data.food_items);
-        AutoCompleteTextView take_order_add_item= (AutoCompleteTextView)
-                view.findViewById(R.id.take_order_add_item);
-        take_order_add_item.setAdapter(adapter);
-
+        } catch (Exception e){}
         final ArrayAdapter mAdapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1,
                 android.R.id.text1,
-                new ArrayList<String>(Arrays.asList(Data.food_items)));
+                food_items);
 
         ListView listView = new ListView(getActivity());
         listView.setAdapter(mAdapter);
@@ -143,9 +165,10 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
 
         // Set up normal ViewGroup example
         itemsContainer  = (ViewGroup) view.findViewById(R.id.dismissable_container);
-        for (int i = 0; i < Data.food_items.length; i++) {
+        // todo change this to iterator
+        for (int i = 0; i < food_items.size(); i++) {
             // Todo add actual statuses here
-            TextView food_list_item = FoodListItem(Data.food_items[i], new Random().nextInt(3));
+            TextView food_list_item = FoodListItem(food_items.get(i), new Random().nextInt(3));
             itemsContainer.addView(food_list_item);
         }
     }
