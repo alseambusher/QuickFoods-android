@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -110,13 +109,13 @@ public class NavigationDrawer extends Fragment {
 		mDrawerListView.setAdapter(new ArrayAdapter<String>(getActionBar()
 				.getThemedContext(),
 				android.R.layout.simple_list_item_activated_1,
-				android.R.id.text1, Data.nav_drawer_items) {
+				android.R.id.text1, Constants.nav_drawer_items) {
 				// setting color of items in nav drawer
 					@Override
 					public View getView(int position, View convertView,ViewGroup parent){
 						View view = super.getView(position, convertView, parent);
 						TextView textView = (TextView) view.findViewById(android.R.id.text1);
-						textView.setTextColor(Data.nav_drawer_text_color);
+						textView.setTextColor(Constants.nav_drawer_text_color);
 						return view;
 					}
 		});

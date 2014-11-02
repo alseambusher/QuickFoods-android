@@ -38,4 +38,13 @@ public class DbHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public static void ordersUpdater(){
+        // TODO
+    }
+
+    // this gets all the items from the server
+    public static void itemsUpdater(){
+        // TODO
+    }
+
 }

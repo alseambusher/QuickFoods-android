@@ -10,6 +10,7 @@ import android.support.v4.app.NotificationCompat;
 
 public class Notification {
     public static int mId = 1337;
+    public NotificationManager mNotificationManager;
     public Notification(Activity activity, String heading, String message){
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(activity)
@@ -35,7 +36,7 @@ public class Notification {
 //                        PendingIntent.FLAG_UPDATE_CURRENT
 //                );
 //        mBuilder.setContentIntent(resultPendingIntent);
-        NotificationManager mNotificationManager =
+        mNotificationManager =
                 (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
 
 // mId allows you to update the notification later on.

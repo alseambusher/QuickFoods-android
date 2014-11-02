@@ -72,7 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/red_button"
-                android:text="Sumbit"
+                android:text="Submit"
                 android:id="@+id/submit_bill"
                 android:layout_weight="0.5" />
             <Button

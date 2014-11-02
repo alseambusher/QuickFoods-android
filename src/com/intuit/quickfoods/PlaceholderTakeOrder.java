@@ -10,13 +10,11 @@ import android.view.ViewStub;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -55,7 +53,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                 } catch (Exception e){}
 
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                        android.R.layout.simple_dropdown_item_1line, Data.food_items);
+                        android.R.layout.simple_dropdown_item_1line, Constants.food_items);
                 final AutoCompleteTextView take_order_add_item= (AutoCompleteTextView)
                         view.findViewById(R.id.take_order_add_item);
                 take_order_add_item.setAdapter(adapter);
@@ -105,7 +103,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
 
         final TextView food_list_item = new TextView(getActivity());
         food_list_item.setTextAppearance(getActivity(), R.style.Theme_Quickfoods_ItemListTextView);
-        food_list_item.setBackgroundResource(Data.ITEM_BORDER[itemStatus]);
+        food_list_item.setBackgroundResource(Constants.ITEM_BORDER[itemStatus]);
         food_list_item.setPadding(10, 20, 10, 20);
         food_list_item.setTextColor(getResources().getColor(R.color.white));
         food_list_item.setLayoutParams(new ViewGroup.LayoutParams(
@@ -113,7 +111,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
         food_list_item.setText(itemValue);
 
         // if item is complete it shouldn't be able to dismiss it
-        if (itemStatus != Data.ITEM_COMPLETE) {
+        if (itemStatus != Constants.ITEM_COMPLETE) {
             food_list_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

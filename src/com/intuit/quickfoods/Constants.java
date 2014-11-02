@@ -2,7 +2,7 @@ package com.intuit.quickfoods;
 
 import android.graphics.Color;
 
-public class Data {
+public final class Constants {
 
     public static String take_order = "Take Order";
     public static String items = "Items";
@@ -36,5 +36,4 @@ public class Data {
             "Paneer Koftha",
             "Pepsi"
     };
-
 }

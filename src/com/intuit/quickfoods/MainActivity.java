@@ -3,9 +3,9 @@ package com.intuit.quickfoods;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
@@ -26,6 +26,8 @@ public class MainActivity extends Activity implements
 	 */
 	private CharSequence mTitle;
 
+    private Intent mQuickFoodsServiceIntent;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,6 +44,12 @@ public class MainActivity extends Activity implements
         // Setup db
         DbHelper db = new DbHelper(this);
         db.getWritableDatabase();
+
+//        Start service
+        mQuickFoodsServiceIntent = new Intent(this, QuickFoodsService.class);
+        mQuickFoodsServiceIntent.setData(Uri.parse("Some data"));
+        this.startService(mQuickFoodsServiceIntent);
+
 	}
 
 	@Override
@@ -49,25 +57,25 @@ public class MainActivity extends Activity implements
 		// update the main content by replacing fragments
 		FragmentManager fragmentManager = getFragmentManager();
 
-		mTitle = Data.nav_drawer_items[position];
+		mTitle = Constants.nav_drawer_items[position];
 
-		if (mTitle == Data.take_order) {
+		if (mTitle == Constants.take_order) {
 			fragmentManager.beginTransaction().replace(R.id.container,
 							new PlaceholderTakeOrder()).commit();
 		}
-		else if (mTitle == Data.items){
+		else if (mTitle == Constants.items){
 			fragmentManager.beginTransaction().replace(R.id.container,
                     new PlaceholderItems()).commit();
 		}
-        else if (mTitle == Data.kitchen){
+        else if (mTitle == Constants.kitchen){
             fragmentManager.beginTransaction().replace(R.id.container,
                     new PlaceholderKitchen()).commit();
         }
-        else if (mTitle == Data.history){
+        else if (mTitle == Constants.history){
             fragmentManager.beginTransaction().replace(R.id.container,
                     new PlaceholderHistory()).commit();
         }
-        else if (mTitle == Data.kitchen){
+        else if (mTitle == Constants.kitchen){
             fragmentManager.beginTransaction().replace(R.id.container,
                     new PlaceholderReviews()).commit();
         }
