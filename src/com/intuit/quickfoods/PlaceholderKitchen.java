@@ -21,7 +21,7 @@ public class PlaceholderKitchen extends PlaceholderBase {
 
         // TODO change this
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_dropdown_item_1line, Constants.food_items);
+                android.R.layout.simple_dropdown_item_1line, ItemsManager.getAllItems(getActivity(),ItemsManager.COLUMN_ITEM));
         AutoCompleteTextView search_items= (AutoCompleteTextView)
                 view.findViewById(R.id.filter_kitchen);
         search_items.setAdapter(adapter);

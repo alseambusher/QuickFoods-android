@@ -12,13 +12,11 @@ public class QuickFoodsService extends Service{
 
     @Override
     public void onCreate() {
-        Log.e("service","started1");
         super.onCreate();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e("service","started");
         return super.onStartCommand(intent, flags, startId);
     }
 

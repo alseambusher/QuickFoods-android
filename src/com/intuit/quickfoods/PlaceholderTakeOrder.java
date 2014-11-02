@@ -1,6 +1,7 @@
 package com.intuit.quickfoods;
 
 
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +23,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
     public View view;
 	public ViewGroup itemsContainer;
     // todo change this to a object with other stuff too
-    public List<String> food_items = new ArrayList<String>();
+    public List<ContentValues> food_items;
 
 	public PlaceholderTakeOrder() {
 		super();
@@ -39,9 +40,9 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
 			@Override
 			public void onClick(View v) {
                 final TextView table_no = (TextView) view.findViewById(R.id.take_order_table_no) ;
-                try {
-                    int table_no_value = Integer.parseInt(table_no.getText().toString());
-                } catch (Exception e){
+                final String table_no_value = table_no.getText().toString();
+
+                if (table_no_value.isEmpty()){
                     Toast.makeText(getActivity(),
                             "Table no. invalid",
                             Toast.LENGTH_SHORT).show();
@@ -52,8 +53,11 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                     ((ViewStub) view.findViewById(R.id.stub_import_order_items_load)).inflate();
                 } catch (Exception e){}
 
+                food_items = OrderManager.getAllItemsFromTable(getActivity(),table_no_value);
+                refreshFoodItemList();
+
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                        android.R.layout.simple_dropdown_item_1line, Constants.food_items);
+                        android.R.layout.simple_dropdown_item_1line, ItemsManager.getAllItems(getActivity(), ItemsManager.COLUMN_ITEM));
                 final AutoCompleteTextView take_order_add_item= (AutoCompleteTextView)
                         view.findViewById(R.id.take_order_add_item);
                 take_order_add_item.setAdapter(adapter);
@@ -66,7 +70,11 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                         String newItemValue = take_order_add_item.getText().toString();
                         // todo make check if item is valid
                         if (!newItemValue.isEmpty()) {
-                            food_items.add(newItemValue);
+                            // todo send count value properly
+                            long order_id = OrderManager.newOrderItem(getActivity(),table_no_value, 1, newItemValue);
+                            ContentValues order = OrderManager.newOrderItemValue(table_no_value, 1, newItemValue);
+                            order.put(OrderManager.ORDER_ID, order_id);
+                            food_items.add(order);
                             refreshFoodItemList();
                             take_order_add_item.setText("");
                         }
@@ -94,18 +102,20 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                     @Override
                     public void onDismiss(View view, Object token) {
                         itemsContainer.removeView(food_list_item);
+                        OrderManager.deleteOrderItem(getActivity(), food_list_item.getId());
                     }
                 });
 	}
 
     // new food list item
-    public TextView FoodListItem(String itemValue, int itemStatus){
+    public TextView FoodListItem(String itemValue, int itemStatus , int order_id){
 
         final TextView food_list_item = new TextView(getActivity());
         food_list_item.setTextAppearance(getActivity(), R.style.Theme_Quickfoods_ItemListTextView);
         food_list_item.setBackgroundResource(Constants.ITEM_BORDER[itemStatus]);
         food_list_item.setPadding(10, 20, 10, 20);
         food_list_item.setTextColor(getResources().getColor(R.color.white));
+        food_list_item.setId(order_id);
         food_list_item.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         food_list_item.setText(itemValue);
@@ -115,9 +125,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
             food_list_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(getActivity(),
-                            "Clicked " + ((Button) view).getText(),
-                            Toast.LENGTH_SHORT).show();
+                    // todo ?
                 }
             });
             food_list_item.setOnTouchListener(touchListener(food_list_item));
@@ -129,16 +137,9 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
         try {
             itemsContainer.removeAllViews();
         } catch (Exception e){}
-        final ArrayAdapter mAdapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1,
-                android.R.id.text1,
-                food_items);
 
         ListView listView = new ListView(getActivity());
-        listView.setAdapter(mAdapter);
-        // Create a ListView-specific touch listener. ListViews are given special treatment because
-        // by default they handle touches for their list items... i.e. they're in charge of drawing
-        // the pressed state (the list selector), handling list item clicks, etc.
+
         SwipeDismissListViewTouchListener touchListener =
                 new SwipeDismissListViewTouchListener(
                         listView,
@@ -150,10 +151,6 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
 
                             @Override
                             public void onDismiss(ListView listView, int[] reverseSortedPositions) {
-                                for (int position : reverseSortedPositions) {
-                                    mAdapter.remove(mAdapter.getItem(position));
-                                }
-                                mAdapter.notifyDataSetChanged();
                             }
                         });
         listView.setOnTouchListener(touchListener);
@@ -166,7 +163,11 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
         // todo change this to iterator
         for (int i = 0; i < food_items.size(); i++) {
             // Todo add actual statuses here
-            TextView food_list_item = FoodListItem(food_items.get(i), new Random().nextInt(3));
+            TextView food_list_item = FoodListItem(
+                    food_items.get(i).getAsString(OrderManager.COLUMN_ORDER_ITEM),
+                    food_items.get(i).getAsInteger(OrderManager.COLUMN_STATUS),
+                    food_items.get(i).getAsInteger(OrderManager.ORDER_ID)
+            );
             itemsContainer.addView(food_list_item);
         }
     }
