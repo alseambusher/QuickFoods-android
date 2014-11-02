@@ -20,7 +20,7 @@
             android:hint="Item" />
 
         <EditText
-                android:id="@+id/editText3"
+                android:id="@+id/take_order_count"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.97"

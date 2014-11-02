@@ -35,6 +35,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
 		view = inflater.inflate(R.layout.fragment_take_order,
 				container, false);
 
+        // GO BUTTON
 		Button table_no_go = (Button) view.findViewById(R.id.button1);
 		table_no_go.setOnClickListener(new OnClickListener() {
 			@Override
@@ -63,16 +64,21 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                 take_order_add_item.setAdapter(adapter);
                 take_order_add_item.requestFocus();
 
+
+                final TextView newItemCount = (TextView) view.findViewById(R.id.take_order_count);
+
+                // ADD ITEM BUTTON CLICK
                 Button add_item = (Button) view.findViewById(R.id.take_order_add_item_button);
                 add_item.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         String newItemValue = take_order_add_item.getText().toString();
+                        int newItemCountValue = Integer.parseInt(newItemCount.getText().toString());
+
                         // todo make check if item is valid
                         if (!newItemValue.isEmpty()) {
-                            // todo send count value properly
-                            long order_id = OrderManager.newOrderItem(getActivity(),table_no_value, 1, newItemValue);
-                            ContentValues order = OrderManager.newOrderItemValue(table_no_value, 1, newItemValue);
+                            long order_id = OrderManager.newOrderItem(getActivity(),table_no_value, newItemCountValue, newItemValue);
+                            ContentValues order = OrderManager.newOrderItemValue(table_no_value, newItemCountValue, newItemValue);
                             order.put(OrderManager.ORDER_ID, order_id);
                             food_items.add(order);
                             refreshFoodItemList();
@@ -85,12 +91,33 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                         }
                     }
                 });
+
+                // SUBMIT BUTTON CLICK
+                Button submit_button = (Button) view.findViewById(R.id.submit_bill);
+                submit_button.setOnClickListener( new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        OrderManager.submit_order(getActivity(), table_no_value);
+                        food_items = OrderManager.getAllItemsFromTable(getActivity(), table_no_value);
+                        refreshFoodItemList();
+                    }
+                });
+
+                // MAKE BILL BUTTON
+                Button bill_button = (Button) view.findViewById(R.id.make_bill);
+                bill_button.setOnClickListener( new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // TODO
+                    }
+                });
             }
         });
         return view;
 	}
 	
 	public SwipeDismissTouchListener touchListener(final TextView food_list_item){
+        final TextView table_no = (TextView) view.findViewById(R.id.take_order_table_no) ;
         return new SwipeDismissTouchListener(
                 food_list_item,null,
                 new SwipeDismissTouchListener.DismissCallbacks() {
@@ -103,6 +130,11 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                     public void onDismiss(View view, Object token) {
                         itemsContainer.removeView(food_list_item);
                         OrderManager.deleteOrderItem(getActivity(), food_list_item.getId());
+
+                        String table_no_value = table_no.getText().toString();
+                        food_items = OrderManager.getAllItemsFromTable(getActivity(), table_no_value);
+                        refreshFoodItemList();
+
                     }
                 });
 	}

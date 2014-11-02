@@ -80,4 +80,11 @@ public class OrderManager {
         SQLiteDatabase db = new DbHelper(context).getWritableDatabase();
         db.delete(TABLE_ORDER, ORDER_ID + " = " + order_id, null);
     }
+
+    public static void submit_order(Context context, String table_no){
+        SQLiteDatabase db = new DbHelper(context).getWritableDatabase();
+        ContentValues value = new ContentValues();
+        value.put(COLUMN_STATUS, Constants.ITEM_IN_KITCHEN);
+        db.update(TABLE_ORDER, value, COLUMN_TABLE_NO + " = " + table_no, null);
+    }
 }
