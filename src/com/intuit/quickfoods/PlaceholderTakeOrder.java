@@ -15,14 +15,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class PlaceholderTakeOrder extends PlaceholderBase {
     public View view;
 	public ViewGroup itemsContainer;
-    // todo change this to a object with other stuff too
     public List<ContentValues> food_items;
 
 	public PlaceholderTakeOrder() {
@@ -54,7 +51,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                     ((ViewStub) view.findViewById(R.id.stub_import_order_items_load)).inflate();
                 } catch (Exception e){}
 
-                food_items = OrderManager.getAllItemsFromTable(getActivity(),table_no_value);
+                food_items = OrderManager.getAllItemsFromTable(getActivity(), OrderManager.COLUMN_TABLE_NO +" = "+ table_no_value);
                 refreshFoodItemList();
 
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
@@ -78,7 +75,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                         // todo make check if item is valid
                         if (!newItemValue.isEmpty()) {
                             long order_id = OrderManager.newOrderItem(getActivity(),table_no_value, newItemCountValue, newItemValue);
-                            ContentValues order = OrderManager.newOrderItemValue(table_no_value, newItemCountValue, newItemValue);
+                            ContentValues order = OrderManager.newOrderItemValue(getActivity(), table_no_value, newItemCountValue, newItemValue);
                             order.put(OrderManager.ORDER_ID, order_id);
                             food_items.add(order);
                             refreshFoodItemList();
@@ -98,7 +95,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                     @Override
                     public void onClick(View view) {
                         OrderManager.submit_order(getActivity(), table_no_value);
-                        food_items = OrderManager.getAllItemsFromTable(getActivity(), table_no_value);
+                        food_items = OrderManager.getAllItemsFromTable(getActivity(), OrderManager.COLUMN_TABLE_NO +" = "+table_no_value);
                         refreshFoodItemList();
                     }
                 });
@@ -132,7 +129,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                         OrderManager.deleteOrderItem(getActivity(), food_list_item.getId());
 
                         String table_no_value = table_no.getText().toString();
-                        food_items = OrderManager.getAllItemsFromTable(getActivity(), table_no_value);
+                        food_items = OrderManager.getAllItemsFromTable(getActivity(), OrderManager.COLUMN_TABLE_NO +" = "+ table_no_value);
                         refreshFoodItemList();
 
                     }
@@ -140,7 +137,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
 	}
 
     // new food list item
-    public TextView FoodListItem(String itemValue, int itemStatus , int order_id){
+    public TextView FoodListItem(String itemValue, int count, int itemStatus , int order_id){
 
         final TextView food_list_item = new TextView(getActivity());
         food_list_item.setTextAppearance(getActivity(), R.style.Theme_Quickfoods_ItemListTextView);
@@ -150,7 +147,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
         food_list_item.setId(order_id);
         food_list_item.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        food_list_item.setText(itemValue);
+        food_list_item.setText(itemValue +" - "+ count);
 
         // if item is complete it shouldn't be able to dismiss it
         if (itemStatus != Constants.ITEM_COMPLETE) {
@@ -191,14 +188,13 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
         listView.setOnScrollListener(touchListener.makeScrollListener());
 
         // Set up normal ViewGroup example
-        itemsContainer  = (ViewGroup) view.findViewById(R.id.dismissable_container);
-        // todo change this to iterator
-        for (int i = 0; i < food_items.size(); i++) {
-            // Todo add actual statuses here
+        itemsContainer  = (ViewGroup) view.findViewById(R.id.take_order_dismissable_container);
+        for (ContentValues item : food_items) {
             TextView food_list_item = FoodListItem(
-                    food_items.get(i).getAsString(OrderManager.COLUMN_ORDER_ITEM),
-                    food_items.get(i).getAsInteger(OrderManager.COLUMN_STATUS),
-                    food_items.get(i).getAsInteger(OrderManager.ORDER_ID)
+                    item.getAsString(OrderManager.COLUMN_ORDER_ITEM),
+                    item.getAsInteger(OrderManager.COLUMN_ITEM_COUNT),
+                    item.getAsInteger(OrderManager.COLUMN_STATUS),
+                    item.getAsInteger(OrderManager.ORDER_ID)
             );
             itemsContainer.addView(food_list_item);
         }

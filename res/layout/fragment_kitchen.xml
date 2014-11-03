@@ -13,39 +13,50 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:weightSum="1">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:hint="Category"
+            android:id="@+id/category_filter_kitchen" />
 
-            <AutoCompleteTextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:hint="Filter"
-                android:id="@+id/filter_kitchen"
-                android:layout_weight="1" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/kitchen_table_no"
+            android:hint="Table no" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Add"
-                android:id="@+id/add_filter_kitchen" />
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:hint="Item"
+            android:id="@+id/filter_kitchen" />
 
-        </LinearLayout>
-        <ViewStub
-            android:id="@+id/stub_import_kitchen_filter"
-            android:inflatedId="@+id/stub_kitchen_filter"
-            android:layout="@layout/stub_kitchen_filter"
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Apply Filter"
+            android:background="@drawable/red_button"
+            android:id="@+id/filter_kitchen_apply" />
+
+        <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom" />
-        <ViewStub
-            android:id="@+id/stub_import_kitchen_items_load"
-            android:inflatedId="@+id/stub_kitchen_items_load"
-            android:layout="@layout/stub_kitchen_items_load"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom" />
+            android:text="Items"
+            android:layout_marginTop="1dp"
+            android:textStyle="bold"
+            android:textSize="15dp"
+            android:background="#eee"
+            android:padding="5dp" />
+        <ScrollView android:fillViewport="true"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp">
+            <LinearLayout android:id="@+id/kitchen_dismissable_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
     </LinearLayout>
 </RelativeLayout>

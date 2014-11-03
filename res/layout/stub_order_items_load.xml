@@ -52,7 +52,7 @@
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:layout_height="0dp">
-        <LinearLayout android:id="@+id/dismissable_container"
+        <LinearLayout android:id="@+id/take_order_dismissable_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />

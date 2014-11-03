@@ -95,4 +95,19 @@ public class ItemsManager {
             return -1;
         }
     }
+
+    public static String getCategory(Context context, String item){
+        SQLiteDatabase db = new DbHelper(context).getReadableDatabase();
+        Cursor cursor = db.query(TABLE_ITEMS, new String[]{COLUMN_CATEGORY}, COLUMN_ITEM + " = '" + item + "'", null, null, null, null);
+        cursor.moveToFirst();
+        if (!cursor.isAfterLast()) {
+            String category = cursor.getString(0);
+            cursor.close();
+            return category;
+        }
+        else {
+            cursor.close();
+            return null;
+        }
+    }
 }
