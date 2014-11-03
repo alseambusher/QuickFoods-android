@@ -2,12 +2,20 @@ package com.intuit.quickfoods;
 
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.os.Bundle;
+import android.print.PrintAttributes;
+import android.print.PrintDocumentAdapter;
+import android.print.PrintJob;
+import android.print.PrintManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -105,7 +113,9 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                 bill_button.setOnClickListener( new OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        // TODO
+                        // TODO check this
+                        BillPrinterManager printer = new BillPrinterManager(getActivity());
+                        printer.doWebViewPrint();
                     }
                 });
             }
@@ -199,4 +209,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
             itemsContainer.addView(food_list_item);
         }
     }
+
+
+
 }

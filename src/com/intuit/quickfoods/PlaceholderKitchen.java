@@ -41,6 +41,8 @@ public class PlaceholderKitchen extends PlaceholderBase {
                 android.R.layout.simple_dropdown_item_1line, ItemsManager.getAllItems(getActivity(),ItemsManager.COLUMN_ITEM));
         search_items.setAdapter(adapter);
 
+        food_items = getFoodItems();
+        refreshFoodItemList();
 
         // APPLY FILTER BUTTON
         final Button filter_button = (Button) view.findViewById(R.id.filter_kitchen_apply);
