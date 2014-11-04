@@ -16,6 +16,7 @@ public class OrderManager {
     public static final String COLUMN_ITEM_COUNT = "count";
     public static final String COLUMN_STATUS = "status";
     public static final String COLUMN_CATEGORY = "category";
+    public static final String COLUMN_DIRECTIONS= "directions";
     public static final String COLUMN_ORDER_ITEM = "item_id";
 
     public static final String[] COLUMNS = new String[] {
@@ -24,6 +25,7 @@ public class OrderManager {
             COLUMN_ITEM_COUNT,
             COLUMN_STATUS,
             COLUMN_CATEGORY,
+            COLUMN_DIRECTIONS,
             COLUMN_ORDER_ITEM,
     };
 
@@ -34,20 +36,28 @@ public class OrderManager {
             + COLUMN_ITEM_COUNT + " integer, "
             + COLUMN_STATUS + " integer, "
             + COLUMN_CATEGORY + " text not null, "
+            + COLUMN_DIRECTIONS + " text, "
             + COLUMN_ORDER_ITEM + " text not null);";
 
-    public static ContentValues Order(String table_no, int count, int status, String item, String category){
+    public static ContentValues Order(String table_no, int count, int status, String item, String category, String directions){
         ContentValues values = new ContentValues();
         values.put(COLUMN_TABLE_NO, table_no);
         values.put(COLUMN_ITEM_COUNT, count);
         values.put(COLUMN_STATUS, status);
         values.put(COLUMN_CATEGORY, category);
+        values.put(COLUMN_DIRECTIONS, directions);
         values.put(COLUMN_ORDER_ITEM, item);
 
         return values;
     }
+    public static ContentValues Order(String table_no, int count, int status, String item, String category) {
+        return Order(table_no, count, status, item, "");
+    }
+    public static ContentValues newOrderItemValue(Context context, String table_no, int count, String item, String directions){
+        return Order(table_no, count, Constants.ITEM_CREATED_STATUS, item, ItemsManager.getCategory(context, item), directions);
+    }
     public static ContentValues newOrderItemValue(Context context, String table_no, int count, String item){
-        return Order(table_no, count, Constants.ITEM_CREATED_STATUS, item, ItemsManager.getCategory(context, item));
+       return newOrderItemValue(context, table_no, count, item, "");
     }
 
     public static ContentValues toItem(Cursor c){
@@ -58,7 +68,7 @@ public class OrderManager {
         return item;
     }
     // returns order id
-    public static long newOrderItem(Context context, String table_no, int count, String item){
+    public static long newOrderItem(Context context, String table_no, int count, String item, String directions){
         int item_id = ItemsManager.getId(context, item);
         if (item_id > -1){
             ContentValues orderItem = newOrderItemValue(context, table_no, count, item);
@@ -67,20 +77,10 @@ public class OrderManager {
         }
         return -1;
     }
-//    public static List<ContentValues> getAllItemsFromTable(Context context, String table_no){
-//        List<ContentValues> items = new ArrayList<ContentValues>();
-//        SQLiteDatabase db = new DbHelper(context).getReadableDatabase();
-//        Cursor cursor = db.query(TABLE_ORDER, COLUMNS,COLUMN_TABLE_NO + " = " + table_no, null, null, null, null);
-//        cursor.moveToFirst();
-//        while (!cursor.isAfterLast()){
-//            items.add(toItem(cursor));
-//            cursor.moveToNext();
-//        }
-//        cursor.close();
-//
-//        return items;
-//
-//    }
+    public static long newOrderItem(Context context, String table_no, int count, String item){
+        return newOrderItem(context, table_no, count, item, "");
+    }
+
     public static  List<ContentValues> getAllItemsFromTable(Context context, String whereClause){
         List<ContentValues> items = new ArrayList<ContentValues>();
         SQLiteDatabase db = new DbHelper(context).getReadableDatabase();
@@ -115,5 +115,20 @@ public class OrderManager {
         ContentValues value = new ContentValues();
         value.put(COLUMN_STATUS, Constants.ITEM_IN_KITCHEN);
         db.update(TABLE_ORDER, value, COLUMN_TABLE_NO + " = " + table_no +" and "+ COLUMN_STATUS +" = "+ Constants.ITEM_CREATED_STATUS, null);
+    }
+
+    public static String getColumn(Context context, int order_id, String column){
+        SQLiteDatabase db = new DbHelper(context).getReadableDatabase();
+        Cursor cursor = db.query(TABLE_ORDER, new String[] {column}, ORDER_ID +" = "+order_id, null, null, null, null, null);
+        cursor.moveToFirst();
+        String item = cursor.getString(0);
+        cursor.close();
+        return item;
+    }
+    public static void updateOrder(Context context, int order_id, String column, String value){
+        SQLiteDatabase db = new DbHelper(context).getWritableDatabase();
+        ContentValues container =  new ContentValues();
+        container.put(column, value);
+        db.update(TABLE_ORDER, container, ORDER_ID +" = "+ order_id, null);
     }
 }

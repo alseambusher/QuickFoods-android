@@ -98,17 +98,25 @@ public class PlaceholderKitchen extends PlaceholderBase {
     }
 
     // new food list item
-    public TextView FoodListItem(String itemValue, int count, int itemStatus , int order_id){
+    public TextView FoodListItem(String itemValue, int count, int itemStatus , String directions, int order_id){
 
         final TextView food_list_item = new TextView(getActivity());
         food_list_item.setTextAppearance(getActivity(), R.style.Theme_Quickfoods_ItemListTextView);
         food_list_item.setBackgroundResource(Constants.ITEM_BORDER[itemStatus]);
-        food_list_item.setPadding(10, 20, 10, 20);
         food_list_item.setTextColor(getResources().getColor(R.color.white));
         food_list_item.setId(order_id);
         food_list_item.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        food_list_item.setText(itemValue +" - "+count);
+
+        if (directions.isEmpty()) {
+            food_list_item.setText(itemValue + " - " + count);
+            food_list_item.setPadding(10, 20, 10, 20);
+        }
+        else {
+            food_list_item.setTextSize(20.8f);
+            food_list_item.setText(itemValue + " - " + count + "\n" + directions);
+            food_list_item.setPadding(10, 15, 10, 15);
+        }
 
         // if item is complete it shouldn't be able to dismiss it
         if (itemStatus != Constants.ITEM_COMPLETE) {
@@ -155,6 +163,7 @@ public class PlaceholderKitchen extends PlaceholderBase {
                     item.getAsString(OrderManager.COLUMN_ORDER_ITEM),
                     item.getAsInteger(OrderManager.COLUMN_ITEM_COUNT),
                     item.getAsInteger(OrderManager.COLUMN_STATUS),
+                    item.getAsString(OrderManager.COLUMN_DIRECTIONS),
                     item.getAsInteger(OrderManager.ORDER_ID)
             );
             itemsContainer.addView(food_list_item);

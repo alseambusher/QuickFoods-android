@@ -45,7 +45,6 @@ public class QuickFoodsService extends Service{
         connect();
         send();
 
-
         return START_STICKY;
     }
 

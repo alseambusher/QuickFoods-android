@@ -1,8 +1,10 @@
 package com.intuit.quickfoods;
 
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
@@ -19,6 +21,7 @@ import android.webkit.WebViewClient;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -147,7 +150,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
 	}
 
     // new food list item
-    public TextView FoodListItem(String itemValue, int count, int itemStatus , int order_id){
+    public TextView FoodListItem(final String itemValue, int count, int itemStatus , final int order_id){
 
         final TextView food_list_item = new TextView(getActivity());
         food_list_item.setTextAppearance(getActivity(), R.style.Theme_Quickfoods_ItemListTextView);
@@ -160,11 +163,11 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
         food_list_item.setText(itemValue +" - "+ count);
 
         // if item is complete it shouldn't be able to dismiss it
-        if (itemStatus != Constants.ITEM_COMPLETE) {
+        if (itemStatus == Constants.ITEM_CREATED_STATUS) {
             food_list_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // todo ?
+                    takeOrderDetails(order_id, itemValue);
                 }
             });
             food_list_item.setOnTouchListener(touchListener(food_list_item));
@@ -210,6 +213,30 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
         }
     }
 
+    public void takeOrderDetails(final int orderID, String item){
+        AlertDialog.Builder detailsDialog = new AlertDialog.Builder(getActivity());
+        detailsDialog.setTitle(item);
+        detailsDialog.setMessage("Directions");
 
+        final EditText directionsBox = new EditText(getActivity());
+        // load the previously entered
+        directionsBox.setText(OrderManager.getColumn(getActivity(), orderID, OrderManager.COLUMN_DIRECTIONS));
+        detailsDialog.setView(directionsBox);
 
+        detailsDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String directionsValue = directionsBox.getText().toString();
+                OrderManager.updateOrder(getActivity(), orderID, OrderManager.COLUMN_DIRECTIONS, directionsValue);
+            }
+        });
+
+        detailsDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // do nothing
+            }
+        });
+        detailsDialog.show();
+    }
 }
