@@ -20,6 +20,7 @@ public final class Constants {
     public static int ITEM_CREATED_STATUS = 0;
     public static int ITEM_IN_KITCHEN = 1;
     public static int ITEM_COMPLETE = 2;
+    // colors for items in take order page
     public static int[] ITEM_BORDER = new int[]{
             R.drawable.black_orange_border,
             R.drawable.black_blue_border,

@@ -163,7 +163,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
         food_list_item.setText(itemValue +" - "+ count);
 
         // if item is complete it shouldn't be able to dismiss it
-        if (itemStatus == Constants.ITEM_CREATED_STATUS) {
+        if (itemStatus != Constants.ITEM_CREATED_STATUS) {
             food_list_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

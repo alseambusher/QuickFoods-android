@@ -102,7 +102,16 @@ public class PlaceholderKitchen extends PlaceholderBase {
 
         final TextView food_list_item = new TextView(getActivity());
         food_list_item.setTextAppearance(getActivity(), R.style.Theme_Quickfoods_ItemListTextView);
-        food_list_item.setBackgroundResource(Constants.ITEM_BORDER[itemStatus]);
+
+        // todo remove hardcoded color categories
+        String category = OrderManager.getColumn(getActivity(), order_id, OrderManager.COLUMN_CATEGORY);
+        if (category.equals("non veg"))
+            food_list_item.setBackgroundResource(Constants.ITEM_BORDER[0]);
+        else if (category.equals("drinks"))
+            food_list_item.setBackgroundResource(Constants.ITEM_BORDER[1]);
+        else
+            food_list_item.setBackgroundResource(Constants.ITEM_BORDER[2]);
+
         food_list_item.setTextColor(getResources().getColor(R.color.white));
         food_list_item.setId(order_id);
         food_list_item.setLayoutParams(new ViewGroup.LayoutParams(
