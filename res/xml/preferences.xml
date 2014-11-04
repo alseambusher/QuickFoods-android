@@ -16,9 +16,11 @@
     <EditTextPreference
         android:key="kitchen_port"
         android:title="Kitchen Port"
-        android:defaultValue="1337"/>
+        android:defaultValue="1337"
+        android:summary="Kitchen server listens to this port"/>
     <EditTextPreference
         android:key="waiter_port"
         android:title="Waiter Port"
-        android:defaultValue="1338"/>
+        android:defaultValue="1338"
+        android:summary="Waiter server listens to this port"/>
 </PreferenceScreen>
