@@ -27,14 +27,8 @@ public final class Constants {
             R.drawable.black_green_border
     };
 
-//    // TODO load this from db
-//    public static String[] food_items = new String[]{
-//            "Veg Manchow Soup",
-//            "Gobi Manchurian",
-//            "Chilly Chicken",
-//            "Paneer Butter Masala",
-//            "Chicken Butter Masala",
-//            "Paneer Koftha",
-//            "Pepsi"
-//    };
+    // message codes
+    public static int _TO_K_ORDER_SUBMIT = 1;
+    public static int _TO_W_ORDER_COMPLETE = 2;
+
 }

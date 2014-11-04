@@ -162,8 +162,8 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         food_list_item.setText(itemValue +" - "+ count);
 
-        // if item is complete it shouldn't be able to dismiss it
-        if (itemStatus != Constants.ITEM_CREATED_STATUS) {
+        // if item is complete it shouldn't be able to dismiss it and shouldn't be able to add directions
+        if (itemStatus != Constants.ITEM_COMPLETE) {
             food_list_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -227,7 +227,10 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 String directionsValue = directionsBox.getText().toString();
-                OrderManager.updateOrder(getActivity(), orderID, OrderManager.COLUMN_DIRECTIONS, directionsValue);
+                if (!directionsValue.isEmpty()) {
+                    // todo update ui
+                    OrderManager.updateOrder(getActivity(), orderID, OrderManager.COLUMN_DIRECTIONS, directionsValue);
+                }
             }
         });
 

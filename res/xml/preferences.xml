@@ -5,14 +5,20 @@
         android:title="Sync"
         android:summary="Check to enable sync"
         android:defaultValue="true" />
-    <!--
-    <ListPreference
-        android:dependency="pref_sync"
-        android:key="pref_syncConnectionType"
-        android:title="@string/pref_syncConnectionType"
-        android:dialogTitle="@string/pref_syncConnectionType"
-        android:entries="@array/pref_syncConnectionTypes_entries"
-        android:entryValues="@array/pref_syncConnectionTypes_values"
-        android:defaultValue="@string/pref_syncConnectionTypes_default" />
-        -->
+    <CheckBoxPreference
+        android:key="is_kitchen"
+        android:title="Kitchen"
+        android:summary="Check if the client is Kitchen"
+        android:defaultValue="true" />
+    <EditTextPreference
+        android:key="ip_address"
+        android:title="Client IP" />
+    <EditTextPreference
+        android:key="kitchen_port"
+        android:title="Kitchen Port"
+        android:defaultValue="1337"/>
+    <EditTextPreference
+        android:key="waiter_port"
+        android:title="Waiter Port"
+        android:defaultValue="1338"/>
 </PreferenceScreen>
