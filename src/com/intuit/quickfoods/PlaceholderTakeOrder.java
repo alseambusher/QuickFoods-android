@@ -150,17 +150,25 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
 	}
 
     // new food list item
-    public TextView FoodListItem(final String itemValue, int count, int itemStatus , final int order_id){
+    public TextView FoodListItem(final String itemValue, int count, int itemStatus , String directions, final int order_id){
 
         final TextView food_list_item = new TextView(getActivity());
         food_list_item.setTextAppearance(getActivity(), R.style.Theme_Quickfoods_ItemListTextView);
         food_list_item.setBackgroundResource(Constants.ITEM_BORDER[itemStatus]);
-        food_list_item.setPadding(10, 20, 10, 20);
         food_list_item.setTextColor(getResources().getColor(R.color.white));
         food_list_item.setId(order_id);
         food_list_item.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        food_list_item.setText(itemValue +" - "+ count);
+
+        if (directions.isEmpty()) {
+            food_list_item.setText(itemValue + " - " + count);
+            food_list_item.setPadding(10, 20, 10, 20);
+        }
+        else {
+            food_list_item.setTextSize(20.8f);
+            food_list_item.setText(itemValue + " - " + count + "\n" + directions);
+            food_list_item.setPadding(10, 15, 10, 15);
+        }
 
         // if item is complete it shouldn't be able to dismiss it and shouldn't be able to add directions
         if (itemStatus != Constants.ITEM_COMPLETE) {
@@ -207,6 +215,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                     item.getAsString(OrderManager.COLUMN_ORDER_ITEM),
                     item.getAsInteger(OrderManager.COLUMN_ITEM_COUNT),
                     item.getAsInteger(OrderManager.COLUMN_STATUS),
+                    item.getAsString(OrderManager.COLUMN_DIRECTIONS),
                     item.getAsInteger(OrderManager.ORDER_ID)
             );
             itemsContainer.addView(food_list_item);
@@ -227,10 +236,10 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 String directionsValue = directionsBox.getText().toString();
-                if (!directionsValue.isEmpty()) {
-                    // todo update ui
-                    OrderManager.updateOrder(getActivity(), orderID, OrderManager.COLUMN_DIRECTIONS, directionsValue);
-                }
+                OrderManager.updateOrder(getActivity(), orderID, OrderManager.COLUMN_DIRECTIONS, directionsValue);
+                String table_no_value = ((TextView)view.findViewById(R.id.take_order_table_no)).getText().toString();
+                food_items = OrderManager.getAllItemsFromTable(getActivity(), OrderManager.COLUMN_TABLE_NO +" = "+table_no_value);
+                refreshFoodItemList();
             }
         });
 
