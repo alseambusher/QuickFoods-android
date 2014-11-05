@@ -105,6 +105,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                 submit_button.setOnClickListener( new OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        new DataSender(getActivity()).submit_order(table_no_value);
                         OrderManager.submit_order(getActivity(), table_no_value);
                         food_items = OrderManager.getAllItemsFromTable(getActivity(), OrderManager.COLUMN_TABLE_NO +" = "+table_no_value);
                         refreshFoodItemList();
@@ -139,6 +140,14 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                     @Override
                     public void onDismiss(View view, Object token) {
                         itemsContainer.removeView(food_list_item);
+
+                        // inform kitchen
+                        if(Integer.parseInt(OrderManager.getColumn(getActivity(),
+                                food_list_item.getId(),
+                                OrderManager.COLUMN_STATUS)) == Constants.ITEM_IN_KITCHEN){
+                                new DataSender(getActivity()).send_delete_order(food_list_item.getId());
+                        }
+
                         OrderManager.deleteOrderItem(getActivity(), food_list_item.getId());
 
                         String table_no_value = table_no.getText().toString();
@@ -222,24 +231,29 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
         }
     }
 
-    public void takeOrderDetails(final int orderID, String item){
+    public void takeOrderDetails(final int order_id, String item){
         AlertDialog.Builder detailsDialog = new AlertDialog.Builder(getActivity());
         detailsDialog.setTitle(item);
         detailsDialog.setMessage("Directions");
 
         final EditText directionsBox = new EditText(getActivity());
         // load the previously entered
-        directionsBox.setText(OrderManager.getColumn(getActivity(), orderID, OrderManager.COLUMN_DIRECTIONS));
+        directionsBox.setText(OrderManager.getColumn(getActivity(), order_id, OrderManager.COLUMN_DIRECTIONS));
         detailsDialog.setView(directionsBox);
 
         detailsDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                String  oldDirections = OrderManager.getColumn(getActivity(), order_id, OrderManager.COLUMN_DIRECTIONS);
                 String directionsValue = directionsBox.getText().toString();
-                OrderManager.updateOrder(getActivity(), orderID, OrderManager.COLUMN_DIRECTIONS, directionsValue);
-                String table_no_value = ((TextView)view.findViewById(R.id.take_order_table_no)).getText().toString();
-                food_items = OrderManager.getAllItemsFromTable(getActivity(), OrderManager.COLUMN_TABLE_NO +" = "+table_no_value);
-                refreshFoodItemList();
+                if (!directionsValue.equals(oldDirections)) {
+                    OrderManager.updateOrder(getActivity(), order_id, OrderManager.COLUMN_DIRECTIONS, directionsValue);
+                    String table_no_value = ((TextView) view.findViewById(R.id.take_order_table_no)).getText().toString();
+                    food_items = OrderManager.getAllItemsFromTable(getActivity(), OrderManager.COLUMN_TABLE_NO + " = " + table_no_value);
+                    refreshFoodItemList();
+                    // send kitchen
+                    new DataSender(getActivity()).send_directions(order_id,directionsValue);
+                }
             }
         });
 

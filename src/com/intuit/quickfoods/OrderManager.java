@@ -77,6 +77,18 @@ public class OrderManager {
         }
         return -1;
     }
+    // this is used only by kitchen
+    public static long newOrderItem(Context context, String order_id, String table_no, String count, String item, String directions){
+        int item_id = ItemsManager.getId(context, item);
+        if (item_id > -1){
+            ContentValues orderItem = newOrderItemValue(context, table_no, Integer.parseInt(count), item, directions);
+            orderItem.put(ORDER_ID, order_id);
+            orderItem.put(COLUMN_STATUS, Constants.ITEM_IN_KITCHEN);
+            SQLiteDatabase db = new DbHelper(context).getWritableDatabase();
+            return db.insert(TABLE_ORDER, null, orderItem);
+        }
+        return -1;
+    }
     public static long newOrderItem(Context context, String table_no, int count, String item){
         return newOrderItem(context, table_no, count, item, "");
     }

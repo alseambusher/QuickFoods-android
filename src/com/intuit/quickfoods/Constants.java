@@ -27,8 +27,15 @@ public final class Constants {
             R.drawable.black_green_border
     };
 
+    // data will be like command^1`2`3~4`5`6
+    public static String DELIMITER_COMMAND = "^";
+    public static String DELIMITER_ITEM = "`";
+    public static String DELIMITER_ITEM_SET = "~";
+
     // message codes
     public static int _TO_K_ORDER_SUBMIT = 1;
     public static int _TO_W_ORDER_COMPLETE = 2;
+    public static int _TO_K_ORDER_DIRECTIONS = 3;
+    public static int _TO_K_DELETE_ORDER= 4;
 
 }

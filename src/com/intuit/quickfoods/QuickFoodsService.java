@@ -1,6 +1,7 @@
 package com.intuit.quickfoods;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
@@ -15,10 +16,14 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 public class QuickFoodsService extends Service{
 
     public static final String TAG = "SocketConnection";
+    public Service service = this;
 
     @Override
     public void onCreate() {
@@ -48,7 +53,7 @@ public class QuickFoodsService extends Service{
         server(int port){
             try {
                 serverSocket = new ServerSocket(port);
-                serverSocket.setSoTimeout(10000);
+                //serverSocket.setSoTimeout(10000);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -69,6 +74,82 @@ public class QuickFoodsService extends Service{
 
                     // TODO do whatever u want with this data
                     String data = in.readUTF();
+                    Log.d(TAG,data);
+                    String command = data.substring(0,data.indexOf(Constants.DELIMITER_COMMAND));
+                   // if (Integer.parseInt(command) == Constants._TO_K_ORDER_SUBMIT){
+                    if (command.compareTo("1") == 0){
+                        String notCommand = data.substring(data.indexOf(Constants.DELIMITER_COMMAND)+1,
+                               data.length());
+                        StringTokenizer tokenizer = new StringTokenizer(notCommand, Constants.DELIMITER_ITEM_SET);
+                        while (tokenizer.hasMoreElements()){
+                            String itemSet = (String) tokenizer.nextElement();
+                                StringTokenizer tokenizerItem = new StringTokenizer(itemSet, Constants.DELIMITER_ITEM);
+                                List<String> item = new ArrayList<String>();
+                                while ((tokenizerItem.hasMoreElements())){
+                                    item.add((String)tokenizerItem.nextElement());
+                                }
+                                OrderManager.newOrderItem(getApplicationContext(),
+                                        item.get(0), // orderid
+                                        item.get(1), //table no
+                                        item.get(2), // count
+                                        item.get(5), // item
+                                        item.get(4) // directions
+                                );
+                            }
+                    }
+
+                    else if (command.compareTo("2") == 0){
+                        String notCommand = data.substring(data.indexOf(Constants.DELIMITER_COMMAND)+1,
+                                data.length());
+                        StringTokenizer tokenizer = new StringTokenizer(notCommand, Constants.DELIMITER_ITEM_SET);
+                        while (tokenizer.hasMoreElements()){
+                            String itemSet = (String) tokenizer.nextElement();
+                            StringTokenizer tokenizerItem = new StringTokenizer(itemSet, Constants.DELIMITER_ITEM);
+                            List<String> item = new ArrayList<String>();
+                            while ((tokenizerItem.hasMoreElements())){
+                                item.add((String)tokenizerItem.nextElement());
+                            }
+                            new Notification(service,"Order complete for table "
+                                     + OrderManager.getColumn(
+                                    getApplicationContext(),
+                                    Integer.parseInt(item.get(0)),
+                                    OrderManager.COLUMN_TABLE_NO)
+                                    , "Item "
+                                    + OrderManager.getColumn(
+                                    getApplicationContext(),
+                                    Integer.parseInt(item.get(0)),
+                                    OrderManager.COLUMN_ORDER_ITEM) );
+
+                            OrderManager.completeOrderItem(getApplicationContext(), Integer.parseInt(item.get(0)));
+                        }
+                    }
+
+                    else if (command.compareTo("4") == 0){
+                        String notCommand = data.substring(data.indexOf(Constants.DELIMITER_COMMAND)+1,
+                                data.length());
+                        StringTokenizer tokenizer = new StringTokenizer(notCommand, Constants.DELIMITER_ITEM_SET);
+                        while (tokenizer.hasMoreElements()){
+                            String itemSet = (String) tokenizer.nextElement();
+                            StringTokenizer tokenizerItem = new StringTokenizer(itemSet, Constants.DELIMITER_ITEM);
+                            List<String> item = new ArrayList<String>();
+                            while ((tokenizerItem.hasMoreElements())){
+                                item.add((String)tokenizerItem.nextElement());
+                            }
+                            new Notification(service,"Order cancelled from table number "
+                                    + OrderManager.getColumn(
+                                    getApplicationContext(),
+                                    Integer.parseInt(item.get(0)),
+                                    OrderManager.COLUMN_TABLE_NO)
+                                    , "Item "
+                                    + OrderManager.getColumn(
+                                    getApplicationContext(),
+                                    Integer.parseInt(item.get(0)),
+                                    OrderManager.COLUMN_ORDER_ITEM) );
+
+                            OrderManager.deleteOrderItem(getApplicationContext(), Integer.parseInt(item.get(0)));
+                        }
+                    }
+
 
                     //DataOutputStream out =
                             //new DataOutputStream(server.getOutputStream());

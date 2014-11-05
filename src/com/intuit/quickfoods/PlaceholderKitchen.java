@@ -91,6 +91,8 @@ public class PlaceholderKitchen extends PlaceholderBase {
                         itemsContainer.removeView(food_list_item);
                         OrderManager.completeOrderItem(getActivity(), food_list_item.getId());
 
+                        new DataSender(getActivity()).item_complete(food_list_item.getId());
+
                         food_items = getFoodItems();
                         refreshFoodItemList();
                     }
