@@ -1,3 +1,6 @@
+QuickFoods
+==========
+
 Orders would to taken on a smartphone / tablet and sent directly to the kitchen. and the kitchen can reciprocate accordingly  
  
 Hence, two primary things that the app can do  
