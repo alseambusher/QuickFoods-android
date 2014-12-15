@@ -3,12 +3,14 @@ package com.intuit.quickfoods;
 import android.app.IntentService;
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.nsd.NsdManager;
 import android.net.nsd.NsdServiceInfo;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
@@ -40,7 +42,9 @@ public class QuickFoodsServiceOld extends Service{
         mNsdHelper = new NsdHelper(getApplicationContext());
         mNsdHelper.initializeNsd();
 
-        advertise();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        Boolean isKitchen = prefs.getBoolean("is_kitchen", false);
+        if (isKitchen) advertise(); // register only if it is kitchen
         discover();
         connect();
         send();
@@ -89,11 +93,6 @@ public class QuickFoodsServiceOld extends Service{
         //messageView.setText("");
         //}
     }
-
-    public void addChatLine(String line) {
-        //mStatusView.append("\n" + line);
-    }
-
 
     @Override
     public void onDestroy() {

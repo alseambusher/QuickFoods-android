@@ -46,13 +46,19 @@ public class NsdHelper {
             @Override
             public void onServiceFound(NsdServiceInfo service) {
                 Log.d(TAG, "Service discovery success" + service);
+                try {
+                    mNsdManager.resolveService(service, mResolveListener);
+                }
+                catch (Exception e){
+                    Log.e(TAG, e.getMessage().toString());
+                }/*
                 if (!service.getServiceType().equals(SERVICE_TYPE)) {
                     Log.d(TAG, "Unknown Service Type: " + service.getServiceType());
                 } else if (service.getServiceName().equals(mServiceName)) {
                     Log.d(TAG, "Same machine: " + mServiceName);
                 } else if (service.getServiceName().contains(mServiceName)){
                     mNsdManager.resolveService(service, mResolveListener);
-                }
+                }*/
             }
 
             @Override
@@ -93,12 +99,14 @@ public class NsdHelper {
             @Override
             public void onServiceResolved(NsdServiceInfo serviceInfo) {
                 Log.e(TAG, "Resolve Succeeded. " + serviceInfo);
-
+                mService = serviceInfo;
+/*
                 if (serviceInfo.getServiceName().equals(mServiceName)) {
                     Log.d(TAG, "Same IP.");
                     return;
                 }
                 mService = serviceInfo;
+                */
             }
         };
     }
