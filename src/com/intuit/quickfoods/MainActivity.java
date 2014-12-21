@@ -4,9 +4,13 @@ package com.intuit.quickfoods;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.os.StrictMode;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
@@ -28,6 +32,7 @@ public class MainActivity extends Activity implements
 	private CharSequence mTitle;
 
     private Intent mQuickFoodsServiceIntent;
+    IQuickFoodsService mIQuickFoodsService;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +56,30 @@ public class MainActivity extends Activity implements
         mQuickFoodsServiceIntent.setData(Uri.parse("Some data"));
         this.startService(mQuickFoodsServiceIntent);
 
+
+        ServiceConnection mConnection = new ServiceConnection() {
+
+            public void onServiceDisconnected(ComponentName name) {
+                mIQuickFoodsService = null;
+            }
+
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                mIQuickFoodsService = IQuickFoodsService.Stub.asInterface(service);
+            }
+        };
+
+        bindService(new Intent(MainActivity.this, QuickFoodsService.class), mConnection, BIND_AUTO_CREATE);
+
 	}
+
+    // send data to connected devices through the service
+    public boolean sendData(String message){
+        try {
+            return mIQuickFoodsService.send(message);
+        } catch (RemoteException e) {
+            return false;
+        }
+    }
 
 	@Override
 	public void onNavigationDrawerItemSelected(int position) {

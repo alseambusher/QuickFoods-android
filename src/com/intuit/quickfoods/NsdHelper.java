@@ -30,9 +30,6 @@ public class NsdHelper {
         initializeResolveListener();
         initializeDiscoveryListener();
         initializeRegistrationListener();
-
-        //mNsdManager.init(mContext.getMainLooper(), this);
-
     }
 
     public void initializeDiscoveryListener() {
