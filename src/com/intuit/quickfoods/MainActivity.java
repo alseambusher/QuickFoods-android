@@ -72,15 +72,6 @@ public class MainActivity extends Activity implements
 
 	}
 
-    // send data to connected devices through the service
-    public boolean sendData(String message){
-        try {
-            return mIQuickFoodsService.send(message);
-        } catch (RemoteException e) {
-            return false;
-        }
-    }
-
 	@Override
 	public void onNavigationDrawerItemSelected(int position) {
 		// update the main content by replacing fragments

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -21,24 +22,13 @@ public class DataSender {
 
     public DataSender(Context context){
         mContext = context;
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        Boolean isKitchen = prefs.getBoolean("is_kitchen", false);
-
-        if(isKitchen)
-            port = Integer.parseInt(prefs.getString("waiter_port", "1338"));
-        else
-            port = Integer.parseInt(prefs.getString("kitchen_port", "1337"));
-
-        serverName = prefs.getString("ip_address","0.0.0.0");
-
     }
-
+/*
     public class sendData extends AsyncTask<String, Void, Void>{
 
         @Override
         protected Void doInBackground(String... strings) {
             String data = strings[0];
-            Log.e("ALseeeeeeeeeeeeeeeeeeeee", "trying....");
             try {
                 Log.d(TAG, "Connecting to " + serverName
                         + " on port " + port);
@@ -62,6 +52,16 @@ public class DataSender {
             return null;
         }
     }
+    */
+    // todo check if this has to be run asynchronously
+    public void sendData(String message){
+        if(!message.isEmpty()) {
+            try {
+                ((MainActivity) mContext).mIQuickFoodsService.send(message);
+            } catch (RemoteException e) {
+            }
+        }
+    }
 
     public void submit_order(String table_no){
         List<ContentValues>items = OrderManager.getAllItemsFromTable(mContext, OrderManager.COLUMN_TABLE_NO +" = "+ table_no
@@ -79,7 +79,7 @@ public class DataSender {
             data += Constants.DELIMITER_ITEM_SET;
         }
 
-        new sendData().execute(data);
+        sendData(data);
     }
 
     public void send_directions(int order_id, String directions){
@@ -88,19 +88,19 @@ public class DataSender {
         data += order_id + Constants.DELIMITER_ITEM;
         data += directions;
 
-        new sendData().execute(data);
+        sendData(data);
     }
 
     public void send_delete_order(int order_id){
         String data = Constants._TO_K_DELETE_ORDER+Constants.DELIMITER_COMMAND;
         data += order_id;
-        new sendData().execute(data);
+        sendData(data);
     }
 
     // sent to waiter
     public void item_complete(int order_id){
        String data = Constants._TO_W_ORDER_COMPLETE+Constants.DELIMITER_COMMAND;
         data +=order_id;
-        new sendData().execute(data);
+        sendData(data);
     }
 }

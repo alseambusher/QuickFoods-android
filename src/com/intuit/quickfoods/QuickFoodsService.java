@@ -330,18 +330,16 @@ public class QuickFoodsService extends Service{
 
     IQuickFoodsService.Stub mStub = new IQuickFoodsService.Stub(){
 
-        public boolean send(String messageString) {
+        public void send(String messageString) {
             if (!messageString.isEmpty()) {
                 try {
                     mConnection.sendMessage(messageString);
-                    return true;
                 }
                 catch (Exception e){
                     // TODO try again for sometime
                     Log.e(TAG,"Unable to send message");
                 }
             }
-            return false;
         }
     };
 
