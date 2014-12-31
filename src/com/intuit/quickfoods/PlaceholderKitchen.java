@@ -22,6 +22,8 @@ public class PlaceholderKitchen extends PlaceholderBase {
     public AutoCompleteTextView search_items;
     public EditText category;
     public EditText tableNo;
+    public KitchenRefresh kThread;
+    public boolean stopRefresh = false;
 
     public PlaceholderKitchen() {
         super();
@@ -54,8 +56,12 @@ public class PlaceholderKitchen extends PlaceholderBase {
             }
         });
 
+        kThread = new KitchenRefresh();
+        kThread.start();
+
         return view;
     }
+
     public List<ContentValues> getFoodItems(){
         List<String> filterQuery = new ArrayList<String>();
 
@@ -72,7 +78,7 @@ public class PlaceholderKitchen extends PlaceholderBase {
         if (!categoryValue.isEmpty()){
             filterQuery.add(OrderManager.COLUMN_CATEGORY+" = '"+ categoryValue +"'");
         }
-        filterQuery.add(OrderManager.COLUMN_STATUS+ " = "+ Constants.ITEM_IN_KITCHEN);
+        filterQuery.add(OrderManager.COLUMN_STATUS + " = " + Constants.ITEM_IN_KITCHEN);
         return OrderManager.getAllItemsFromTable(getActivity(), filterQuery);
     }
 
@@ -179,5 +185,22 @@ public class PlaceholderKitchen extends PlaceholderBase {
             );
             itemsContainer.addView(food_list_item);
         }
+    }
+
+    // this only refreshes the ui
+    public class KitchenRefresh extends Thread{
+        public void run(){
+            while (!stopRefresh) {
+                // TODO:performance perform refresh only if items have changed
+                food_items = getFoodItems();
+                refreshFoodItemList();
+            }
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopRefresh = true;
     }
 }

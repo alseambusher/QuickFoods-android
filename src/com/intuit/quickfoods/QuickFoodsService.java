@@ -371,7 +371,6 @@ public class QuickFoodsService extends Service{
         }
     }
 
-
     @Override
     public void onDestroy() {
         mNsdHelper.tearDown();
