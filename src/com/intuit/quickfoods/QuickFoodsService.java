@@ -196,6 +196,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -220,14 +221,13 @@ public class QuickFoodsService extends Service{
         mUpdateHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                Log.d(TAG,msg.getData().getString("msg"));
                 // todo when you  a message
                 // todo check this
-                String data = msg.getData().getString("msg");
+                String data = msg.getData().getString("msg").substring(6);
                     Log.d(TAG,data);
                     String command = data.substring(0,data.indexOf(Constants.DELIMITER_COMMAND));
-                   // if (Integer.parseInt(command) == Constants._TO_K_ORDER_SUBMIT){
-                    if (command.compareTo("1") == 0){
+                    if (Integer.parseInt(command) == Constants._TO_K_ORDER_SUBMIT){
+                        Toast.makeText(service, command, Toast.LENGTH_LONG).show();
                         String notCommand = data.substring(data.indexOf(Constants.DELIMITER_COMMAND)+1,
                                data.length());
                         StringTokenizer tokenizer = new StringTokenizer(notCommand, Constants.DELIMITER_ITEM_SET);
@@ -249,7 +249,7 @@ public class QuickFoodsService extends Service{
                             }
                     }
 
-                    else if (command.compareTo("2") == 0){
+                    else if (Integer.parseInt(command) == Constants._TO_W_ORDER_COMPLETE){
                         String notCommand = data.substring(data.indexOf(Constants.DELIMITER_COMMAND)+1,
                                 data.length());
                         StringTokenizer tokenizer = new StringTokenizer(notCommand, Constants.DELIMITER_ITEM_SET);
@@ -275,7 +275,7 @@ public class QuickFoodsService extends Service{
                         }
                     }
 
-                    else if (command.compareTo("4") == 0){
+                    else if (Integer.parseInt(command) == Constants._TO_K_DELETE_ORDER){
                         String notCommand = data.substring(data.indexOf(Constants.DELIMITER_COMMAND)+1,
                                 data.length());
                         StringTokenizer tokenizer = new StringTokenizer(notCommand, Constants.DELIMITER_ITEM_SET);
@@ -300,12 +300,6 @@ public class QuickFoodsService extends Service{
                             OrderManager.deleteOrderItem(getApplicationContext(), Integer.parseInt(item.get(0)));
                         }
                     }
-
-
-                    //DataOutputStream out =
-                            //new DataOutputStream(server.getOutputStream());
-                    //out.writeUTF("Thank you for connecting to "
-                            //+ server.getLocalSocketAddress() + "\nGoodbye!");
             }
         };
 
@@ -315,17 +309,24 @@ public class QuickFoodsService extends Service{
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         Boolean isKitchen = prefs.getBoolean("is_kitchen", false);
-        if (isKitchen) advertise(); // register only if it is kitchen
-        discover();
-        while (connect() == false){};
-        //send();
 
-        return START_STICKY;
+        if (isKitchen) {
+            advertise(); // register only if it is kitchen
+        } else {
+            discover();
+            while (connect() == false){
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {}
+            }
+        }
+
+        return START_NOT_STICKY;
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return mStub;
     }
 
     IQuickFoodsService.Stub mStub = new IQuickFoodsService.Stub(){
@@ -333,6 +334,7 @@ public class QuickFoodsService extends Service{
         public void send(String messageString) {
             if (!messageString.isEmpty()) {
                 try {
+                    Log.d(TAG,"Sending:" + messageString);
                     mConnection.sendMessage(messageString);
                 }
                 catch (Exception e){

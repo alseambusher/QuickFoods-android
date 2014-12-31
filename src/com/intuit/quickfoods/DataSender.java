@@ -58,8 +58,7 @@ public class DataSender {
         if(!message.isEmpty()) {
             try {
                 ((MainActivity) mContext).mIQuickFoodsService.send(message);
-            } catch (RemoteException e) {
-            }
+            } catch (RemoteException e) {}
         }
     }
 

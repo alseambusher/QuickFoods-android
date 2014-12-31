@@ -13,6 +13,7 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.os.StrictMode;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -69,8 +70,7 @@ public class MainActivity extends Activity implements
         };
 
         bindService(new Intent(MainActivity.this, QuickFoodsService.class), mConnection, BIND_AUTO_CREATE);
-
-	}
+    }
 
 	@Override
 	public void onNavigationDrawerItemSelected(int position) {
@@ -144,4 +144,9 @@ public class MainActivity extends Activity implements
 		return super.onOptionsItemSelected(item);
 	}
 
+    @Override
+    protected void onDestroy() {
+        stopService(new Intent(this, QuickFoodsService.class));
+        super.onDestroy();
+    }
 }
