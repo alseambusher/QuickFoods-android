@@ -4,6 +4,9 @@ import android.graphics.Color;
 
 public final class Constants {
 
+    // settings
+    public static String FTU_ENABLED = "FTU Enabled";
+
     public static String take_order = "Take Order";
     public static String items = "Items";
     public static String kitchen = "Kitchen";

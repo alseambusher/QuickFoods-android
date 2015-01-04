@@ -7,15 +7,19 @@ import android.app.FragmentManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 
 public class MainActivity extends Activity implements
 		NavigationDrawer.NavigationDrawerCallbacks {
@@ -34,42 +38,64 @@ public class MainActivity extends Activity implements
 
     private Intent mQuickFoodsServiceIntent;
     IQuickFoodsService mIQuickFoodsService;
+    SharedPreferences prefs;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
 
-		mNavigationDrawerFragment = (NavigationDrawer) getFragmentManager()
-				.findFragmentById(R.id.navigation_drawer);
-		mTitle = getTitle();
+         prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        // create FTU shared preference if it doesn't exist already
+        if(!prefs.contains(Constants.FTU_ENABLED)){
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean(Constants.FTU_ENABLED,false);
+        }
+        // if it is first time
+        if (!prefs.getBoolean(Constants.FTU_ENABLED,false)){
+            //Remove title bar
+            this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            //Remove notification bar
+            this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            setContentView(R.layout.welcome);
+            /*
+            finish();
+            startActivity(getIntent());
+             */
+        } else {
 
-		// Set up the drawer.
-		mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
-				(DrawerLayout) findViewById(R.id.drawer_layout));
+            setContentView(R.layout.activity_main);
 
-        // Setup db
-        DbHelper db = new DbHelper(this);
-        db.getWritableDatabase();
+            mNavigationDrawerFragment = (NavigationDrawer) getFragmentManager()
+                    .findFragmentById(R.id.navigation_drawer);
+            mTitle = getTitle();
+
+            // Set up the drawer.
+            mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
+                    (DrawerLayout) findViewById(R.id.drawer_layout));
+
+            // Setup db
+            DbHelper db = new DbHelper(this);
+            db.getWritableDatabase();
 
 //        Start service
-        mQuickFoodsServiceIntent = new Intent(this, QuickFoodsService.class);
-        mQuickFoodsServiceIntent.setData(Uri.parse("Some data"));
-        this.startService(mQuickFoodsServiceIntent);
+            mQuickFoodsServiceIntent = new Intent(this, QuickFoodsService.class);
+            mQuickFoodsServiceIntent.setData(Uri.parse("Some data"));
+            this.startService(mQuickFoodsServiceIntent);
 
 
-        ServiceConnection mConnection = new ServiceConnection() {
+            ServiceConnection mConnection = new ServiceConnection() {
 
-            public void onServiceDisconnected(ComponentName name) {
-                mIQuickFoodsService = null;
-            }
+                public void onServiceDisconnected(ComponentName name) {
+                    mIQuickFoodsService = null;
+                }
 
-            public void onServiceConnected(ComponentName name, IBinder service) {
-                mIQuickFoodsService = IQuickFoodsService.Stub.asInterface(service);
-            }
-        };
+                public void onServiceConnected(ComponentName name, IBinder service) {
+                    mIQuickFoodsService = IQuickFoodsService.Stub.asInterface(service);
+                }
+            };
 
-        bindService(new Intent(MainActivity.this, QuickFoodsService.class), mConnection, BIND_AUTO_CREATE);
+            bindService(new Intent(MainActivity.this, QuickFoodsService.class), mConnection, BIND_AUTO_CREATE);
+        }
     }
 
 	@Override
@@ -119,14 +145,17 @@ public class MainActivity extends Activity implements
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		if (!mNavigationDrawerFragment.isDrawerOpen()) {
-			// Only show items in the action bar relevant to this screen
-			// if the drawer is not showing. Otherwise, let the drawer
-			// decide what to show in the action bar.
-			getMenuInflater().inflate(R.menu.main, menu);
-			restoreActionBar();
-			return true;
-		}
+
+        if (prefs.getBoolean(Constants.FTU_ENABLED,false)) {
+            if (!mNavigationDrawerFragment.isDrawerOpen()) {
+                // Only show items in the action bar relevant to this screen
+                // if the drawer is not showing. Otherwise, let the drawer
+                // decide what to show in the action bar.
+                getMenuInflater().inflate(R.menu.main, menu);
+                restoreActionBar();
+                return true;
+            }
+        }
 		return super.onCreateOptionsMenu(menu);
 	}
 
