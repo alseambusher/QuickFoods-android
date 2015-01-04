@@ -20,6 +20,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
 public class MainActivity extends Activity implements
 		NavigationDrawer.NavigationDrawerCallbacks {
 
@@ -94,6 +97,11 @@ public class MainActivity extends Activity implements
             mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
                     (DrawerLayout) findViewById(R.id.drawer_layout));
 
+            // switch to kitchen window id it is kitchen
+            if(prefs.getBoolean(Constants.IS_KITCHEN, false)){
+                onNavigationDrawerItemSelected(Arrays.asList(Constants.nav_drawer_items).indexOf(Constants.kitchen));
+            }
+
             // Setup db
             DbHelper db = new DbHelper(this);
             db.getWritableDatabase();
@@ -116,6 +124,8 @@ public class MainActivity extends Activity implements
             };
 
             bindService(new Intent(MainActivity.this, QuickFoodsService.class), mConnection, BIND_AUTO_CREATE);
+
+
         }
     }
 

@@ -43,28 +43,32 @@ public class QuickFoodsService extends Service{
                 // todo check this
                 String data = msg.getData().getString("msg").substring(6);
                     Log.d(TAG,data);
-                    String command = data.substring(0,data.indexOf(Constants.DELIMITER_COMMAND));
+                    String command ;
+                    try {
+                        command = data.substring(0, data.indexOf(Constants.DELIMITER_COMMAND));
+                    } catch (Exception e) { return;}
                     if (Integer.parseInt(command) == Constants._TO_K_ORDER_SUBMIT){
                         Toast.makeText(service, command, Toast.LENGTH_LONG).show();
                         String notCommand = data.substring(data.indexOf(Constants.DELIMITER_COMMAND)+1,
-                               data.length());
+                                data.length());
                         StringTokenizer tokenizer = new StringTokenizer(notCommand, Constants.DELIMITER_ITEM_SET);
-
-                        while (tokenizer.hasMoreElements()){
-                            String itemSet = (String) tokenizer.nextElement();
-                                StringTokenizer tokenizerItem = new StringTokenizer(itemSet, Constants.DELIMITER_ITEM);
-                                List<String> item = new ArrayList<String>();
-                                while ((tokenizerItem.hasMoreElements())){
-                                    item.add((String)tokenizerItem.nextElement());
-                                }
-                                OrderManager.newOrderItem(getApplicationContext(),
-                                        item.get(0), // orderid
-                                        item.get(1), //table no
-                                        item.get(2), // count
-                                        item.get(5), // item
-                                        item.get(4) // directions
-                                );
+                        String[] itemSets = notCommand.split(Constants.DELIMITER_ITEM_SET);
+                        for(int j=0; j<itemSets.length; j++){
+                            String[] itemSet = itemSets[j].split(Constants.DELIMITER_ITEM);
+                            List<String> item = new ArrayList<String>();
+                            for(int k=0; k<itemSet.length; k++){
+                                item.add(itemSet[k]);
+                                Log.d("alse",itemSet[k]);
                             }
+                            OrderManager.newOrderItem(getApplicationContext(),
+                                    item.get(0), // orderid
+                                    item.get(1), //table no
+                                    item.get(2), // count
+                                    item.get(6), // item
+                                    item.get(5) // directions
+                            );
+                        }
+
                     }
 
                     else if (Integer.parseInt(command) == Constants._TO_W_ORDER_COMPLETE){
