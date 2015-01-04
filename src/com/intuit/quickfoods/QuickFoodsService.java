@@ -126,7 +126,7 @@ public class QuickFoodsService extends Service{
         mNsdHelper.initializeNsd();
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        Boolean isKitchen = prefs.getBoolean("is_kitchen", false);
+        Boolean isKitchen = prefs.getBoolean(Constants.IS_KITCHEN, false);
 
         if (isKitchen) {
             advertise(); // register only if it is kitchen

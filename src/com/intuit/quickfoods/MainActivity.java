@@ -11,15 +11,14 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.RemoteException;
-import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 
 public class MainActivity extends Activity implements
 		NavigationDrawer.NavigationDrawerCallbacks {
@@ -44,25 +43,47 @@ public class MainActivity extends Activity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-         prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         // create FTU shared preference if it doesn't exist already
-        if(!prefs.contains(Constants.FTU_ENABLED)){
+        if(!prefs.contains(Constants.FTU_SETUP_DISABLED)){
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean(Constants.FTU_ENABLED,false);
+            editor.putBoolean(Constants.FTU_SETUP_DISABLED,false);
+            editor.commit();
         }
         // if it is first time
-        if (!prefs.getBoolean(Constants.FTU_ENABLED,false)){
+        if (!prefs.getBoolean(Constants.FTU_SETUP_DISABLED,false)){
             //Remove title bar
             this.requestWindowFeature(Window.FEATURE_NO_TITLE);
             //Remove notification bar
             this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
             setContentView(R.layout.welcome);
-            /*
-            finish();
-            startActivity(getIntent());
-             */
-        } else {
 
+            Button setupWaiter = (Button)findViewById(R.id.setup_waiter);
+            setupWaiter.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putBoolean(Constants.FTU_SETUP_DISABLED,true);
+                    editor.putBoolean(Constants.IS_KITCHEN,false);
+                    editor.commit();
+                    finish();
+                    startActivity(getIntent());
+                }
+            });
+
+            Button setupKitchen= (Button)findViewById(R.id.setup_kitchen);
+            setupKitchen.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putBoolean(Constants.FTU_SETUP_DISABLED,true);
+                    editor.putBoolean(Constants.IS_KITCHEN,true);
+                    editor.commit();
+                    finish();
+                    startActivity(getIntent());
+                }
+            });
+        } else {
             setContentView(R.layout.activity_main);
 
             mNavigationDrawerFragment = (NavigationDrawer) getFragmentManager()
@@ -146,7 +167,7 @@ public class MainActivity extends Activity implements
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
-        if (prefs.getBoolean(Constants.FTU_ENABLED,false)) {
+        if (prefs.getBoolean(Constants.FTU_SETUP_DISABLED,false)) {
             if (!mNavigationDrawerFragment.isDrawerOpen()) {
                 // Only show items in the action bar relevant to this screen
                 // if the drawer is not showing. Otherwise, let the drawer

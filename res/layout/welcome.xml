@@ -1,21 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:background="@drawable/round_blue_button">
+    android:layout_height="match_parent" android:background="@color/theme_background_dark">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:gravity="center_vertical|center">
 
-    <TextView
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:src="@drawable/logo"
+            android:layout_gravity="center_vertical" />
+
+        <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/app_name"
         android:id="@+id/textView"
         android:textColor="#fff"
-        android:textSize="50dp" />
+        android:textSize="50dp"
+        android:background="@color/theme_background_dark" />
 
-        </LinearLayout>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Setup Kitchen"
+            android:id="@+id/setup_kitchen"
+            android:textColor="@color/theme_background_dark"
+            android:background="@drawable/white_button"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="30dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Setup Waiter"
+            android:id="@+id/setup_waiter"
+            android:textColor="@color/theme_background_dark"
+            android:background="@drawable/white_button"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="15dp" />
+
+    </LinearLayout>
 
 </LinearLayout>

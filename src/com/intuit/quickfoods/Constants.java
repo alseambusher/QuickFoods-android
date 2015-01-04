@@ -5,7 +5,9 @@ import android.graphics.Color;
 public final class Constants {
 
     // settings
-    public static String FTU_ENABLED = "FTU Enabled";
+    public static String FTU_SETUP_DISABLED = "FTU Setup Disabled";
+    public static String FTU_HELP_DISABLED= "FTU Help Disabled";
+    public static String IS_KITCHEN = "is_kitchen";
 
     public static String take_order = "Take Order";
     public static String items = "Items";

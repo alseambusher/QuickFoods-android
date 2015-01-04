@@ -14,6 +14,8 @@
 
     <color name="white">#ffff</color>
     <color name="button">#1284ff</color>
+    <color name="theme_background_dark">#3F51B5</color>
+    <color name="theme_background_light">#E8EAF6</color>
 
     <string name="title_activity_settings">SettingsActivity</string>
 
