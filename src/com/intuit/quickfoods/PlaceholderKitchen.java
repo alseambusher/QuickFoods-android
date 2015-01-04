@@ -2,6 +2,7 @@ package com.intuit.quickfoods;
 
 import android.content.ContentValues;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -191,9 +192,21 @@ public class PlaceholderKitchen extends PlaceholderBase {
     public class KitchenRefresh extends Thread{
         public void run(){
             while (!stopRefresh) {
-                // TODO:performance perform refresh only if items have changed
-                food_items = getFoodItems();
-                refreshFoodItemList();
+                List<ContentValues> new_food_items = getFoodItems();
+                if (!new_food_items.equals(food_items)){
+                    food_items = new_food_items;
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            refreshFoodItemList();
+                        }
+                    });
+                }
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

@@ -17,9 +17,7 @@
 
 
     <style name="ActionBar.Solid.Quickfoods" parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
-        <item name="android:background">@drawable/ab_background_textured_quickfoods</item>
-        <item name="android:backgroundStacked">@drawable/ab_stacked_solid_quickfoods</item>
-        <item name="android:backgroundSplit">@drawable/ab_background_textured_quickfoods</item>
+        <item name="android:background">@color/theme_background_dark</item>
         <item name="android:progressBarStyle">@style/ProgressBar.Quickfoods</item>
         <item name="android:titleTextStyle">@style/ActionBar.TitleTextStyle</item>
     </style>

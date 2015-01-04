@@ -63,6 +63,7 @@ public class ItemsManager {
             cursor.moveToNext();
         }
         cursor.close();
+        db.close();
         return values;
 
     }
@@ -78,6 +79,7 @@ public class ItemsManager {
             cursor.moveToNext();
         }
         cursor.close();
+        db.close();
         return values.toArray(new String[values.size()]);
     }
 
@@ -88,10 +90,12 @@ public class ItemsManager {
         if (!cursor.isAfterLast()) {
             int _id = Integer.parseInt(cursor.getString(0));
             cursor.close();
+            db.close();
             return _id;
         }
         else {
             cursor.close();
+            db.close();
             return -1;
         }
     }
@@ -103,10 +107,12 @@ public class ItemsManager {
         if (!cursor.isAfterLast()) {
             String category = cursor.getString(0);
             cursor.close();
+            db.close();
             return category;
         }
         else {
             cursor.close();
+            db.close();
             return null;
         }
     }

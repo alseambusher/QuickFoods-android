@@ -9,6 +9,7 @@
     </item>
     <item>
         <layer-list>
+            <!-- you can stack this up
             <item>
                 <shape>
                     <corners android:radius="3dp" />
@@ -16,6 +17,7 @@
                     <padding android:bottom="1dp" android:left="1dp" android:right="1dp" android:top="1dp" />
                 </shape>
             </item>
+            -->
             <item>
                 <shape>
                     <corners android:radius="3dp" />
