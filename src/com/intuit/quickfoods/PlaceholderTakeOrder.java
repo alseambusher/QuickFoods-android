@@ -45,12 +45,14 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
 			Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_take_order,
 				container, false);
+        /*
         new ShowcaseView.Builder(getActivity())
                 .setTarget(new ActionViewTarget(getActivity(), ActionViewTarget.Type.HOME))
                 .setContentTitle("ShowcaseView")
                 .setContentText("This is highlighting the Home button")
                 .hideOnTouchOutside()
                 .build();
+                */
 
         // GO BUTTON
 		Button table_no_go = (Button) view.findViewById(R.id.button1);

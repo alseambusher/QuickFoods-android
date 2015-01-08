@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="start"
                 android:text="Go"
-                android:background="@drawable/round_blue_button" />
+                />
 
         </LinearLayout>
 

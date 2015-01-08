@@ -47,6 +47,7 @@
             android:layout_marginTop="1dp"
             android:textStyle="bold"
             android:textSize="15dp"
+            android:textColor="@color/background_material_dark"
             android:background="#eee"
             android:padding="5dp" />
         <ScrollView android:fillViewport="true"

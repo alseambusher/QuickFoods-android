@@ -1,8 +1,9 @@
 package com.intuit.quickfoods;
 
 
-import android.app.ActionBar;
-import android.app.Activity;
+import android.content.Context;
+import android.graphics.Color;
+import android.support.v7.app.ActionBar;
 import android.app.FragmentManager;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -15,12 +16,14 @@ import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -57,8 +60,6 @@ public class MainActivity extends ActionBarActivity implements
         }
         // if it is first time
         if (!prefs.getBoolean(Constants.FTU_SETUP_DISABLED,false)){
-            //Remove title bar
-            this.requestWindowFeature(Window.FEATURE_NO_TITLE);
             //Remove notification bar
             this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
             setContentView(R.layout.welcome);
@@ -91,13 +92,9 @@ public class MainActivity extends ActionBarActivity implements
         } else {
 
             setContentView(R.layout.activity_main);
-            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-            if (toolbar != null) {
-                setSupportActionBar(toolbar);
-            }
-
-
-            mNavigationDrawerFragment = (NavigationDrawer) getFragmentManager()
+            //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            //setSupportActionBar(toolbar);
+            mNavigationDrawerFragment = (NavigationDrawer) getSupportFragmentManager()
                     .findFragmentById(R.id.navigation_drawer);
             mTitle = getTitle();
 
@@ -176,7 +173,7 @@ public class MainActivity extends ActionBarActivity implements
 	}
 
 	public void restoreActionBar() {
-		ActionBar actionBar = getActionBar();
+		ActionBar actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 		actionBar.setDisplayShowTitleEnabled(true);
 		actionBar.setTitle(mTitle);

@@ -35,9 +35,6 @@ android {
         release.setRoot('build-types/release')
     }
 
-    dependencies {
-        compile fileTree(dir: 'libs', include: '*.jar')
-    }
 }
 
 dependencies {
