@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,7 +25,7 @@ import android.widget.Button;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 
-public class MainActivity extends Activity implements
+public class MainActivity extends ActionBarActivity implements
 		NavigationDrawer.NavigationDrawerCallbacks {
 
 	/**
@@ -87,7 +89,13 @@ public class MainActivity extends Activity implements
                 }
             });
         } else {
+
             setContentView(R.layout.activity_main);
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            if (toolbar != null) {
+                setSupportActionBar(toolbar);
+            }
+
 
             mNavigationDrawerFragment = (NavigationDrawer) getFragmentManager()
                     .findFragmentById(R.id.navigation_drawer);

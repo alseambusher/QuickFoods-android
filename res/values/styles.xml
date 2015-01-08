@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Theme.Quickfoods" parent="@android:style/Theme.Holo.Light">
+    <style name="Theme.Quickfoods" parent="Theme.AppCompat">
         <item name="android:actionBarItemBackground">@drawable/selectable_background_quickfoods</item>
         <item name="android:popupMenuStyle">@style/PopupMenu.Quickfoods</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Quickfoods</item>
@@ -13,6 +13,11 @@
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Quickfoods</item>
         <item name="android:buttonStyle">@style/Theme.QuickFoods.button</item>
         <item name="android:fontFamily">sans-serif</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@color/theme_background_dark</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+
     </style>
 
 
