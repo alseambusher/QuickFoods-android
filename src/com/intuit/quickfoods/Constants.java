@@ -18,7 +18,7 @@ public final class Constants {
 
     // if you change this order the todal order will change
     public static String[] nav_drawer_items = new String[]{take_order, tables, items,
-            kitchen, history, review};
+            kitchen, history};
 
     // colors
     public static int nav_drawer_text_color = Color.BLACK;

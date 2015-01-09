@@ -8,28 +8,57 @@
         <item name="actionBarStyle">@style/ActionBar.Solid.Quickfoods</item>
         <item name="colorPrimary">@color/theme_background_dark</item>
         <item name="colorPrimaryDark">@color/theme_background_light</item>
-        <item name="editTextColor">#000000</item>
-        <item name="android:textColorHint">#555555</item>
+        <item name="android:editTextStyle">@style/Theme.Quickfoods.ItemListTextView</item>
+        <item name="android:autoCompleteTextViewStyle">@style/Theme.Quickfoods.AutoCompleteTextView</item>
         <item name="android:buttonStyle">@style/Theme.QuickFoods.button</item>
+        <item name="android:imageButtonStyle">@style/Theme.QuickFoods.button</item>
+        <item name="colorControlNormal">#C5CAE9</item>
+        <item name="colorControlActivated">#1E88E5</item>
+        <item name="colorControlHighlight">#1E88E5</item>
     </style>
 
-    <style name="ActionBar.Solid.Quickfoods" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+    <style name="ActionBar.Solid.Quickfoods" parent="Widget.AppCompat.DrawerArrowToggle">
         <item name="background">@color/theme_background_dark</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
-        <item name="elevation">8dp</item>
+        <item name="spinBars">true</item>
     </style>
 
-    <style name="Theme.QuickFoods.button" parent="@android:style/Widget.Holo.Button">
-          <item name="android:background">@drawable/button</item>
-            <item name="elevation">8dp</item>
-        <item name="android:width">@dimen/action_button_min_width_material</item>
-        <item name="android:height">@dimen/action_button_min_height_material</item>
+    <style name="Theme.QuickFoods.button" parent="Widget.AppCompat.ActionButton">
+        <item name="android:textSize">20sp</item>
+        <item name="android:color">@color/theme_background_light</item>
     </style>
 
     <style name="Theme.Quickfoods.ItemListTextView" parent="Widget.AppCompat.EditText">
         <item name="android:fontFamily">sans-serif-light</item>
-        <item name="android:textSize">25dp</item>
-        <item name="android:padding">20dp</item>
+        <item name="android:textColorHint">#9FA8DA</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingLeft">10dp</item>
+    </style>
+    <style name="Theme.Quickfoods.AutoCompleteTextView" parent="Widget.AppCompat.AutoCompleteTextView">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textColorHint">#9FA8DA</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingLeft">10dp</item>
+    </style>
+    <style name="Theme.Quickfoods.ItemListTextView.Light" parent="Widget.AppCompat.EditText">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textColorHint">#9FA8DA</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingLeft">10dp</item>
+    </style>
+    <style name="Theme.Quickfoods.AutoCompleteTextView.Light" parent="Widget.AppCompat.AutoCompleteTextView">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textColorHint">#9FA8DA</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingLeft">10dp</item>
     </style>
 </resources>

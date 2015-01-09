@@ -2,16 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="0dp"
-    android:paddingLeft="0dp"
-    android:paddingRight="0dp"
-    android:paddingTop="3dp"
     tools:context="com.intuit.quickfoods.MainActivity$PlaceholderFragment" >
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/theme_background_dark">
 
         <EditText
             android:layout_width="match_parent"
@@ -44,7 +41,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Items"
-            android:layout_marginTop="1dp"
             android:textStyle="bold"
             android:textSize="15dp"
             android:textColor="@color/background_material_dark"

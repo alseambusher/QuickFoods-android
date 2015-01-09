@@ -22,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,7 +56,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                 */
 
         // GO BUTTON
-		Button table_no_go = (Button) view.findViewById(R.id.button1);
+		ImageButton table_no_go = (ImageButton) view.findViewById(R.id.button1);
 		table_no_go.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -87,7 +88,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                 final TextView newItemCount = (TextView) view.findViewById(R.id.take_order_count);
 
                 // ADD ITEM BUTTON CLICK
-                Button add_item = (Button) view.findViewById(R.id.take_order_add_item_button);
+                ImageButton add_item = (ImageButton) view.findViewById(R.id.take_order_add_item_button);
                 add_item.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {

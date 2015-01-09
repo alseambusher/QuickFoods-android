@@ -64,6 +64,7 @@ public class MainActivity extends ActionBarActivity implements
             this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
             setContentView(R.layout.welcome);
 
+
             Button setupWaiter = (Button)findViewById(R.id.setup_waiter);
             setupWaiter.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -161,7 +162,7 @@ public class MainActivity extends ActionBarActivity implements
             fragmentManager.beginTransaction().replace(R.id.container,
                     new PlaceholderHistory()).commit();
         }
-        else if (mTitle == Constants.kitchen){
+        else if (mTitle == Constants.review){
             fragmentManager.beginTransaction().replace(R.id.container,
                     new PlaceholderReviews()).commit();
         }

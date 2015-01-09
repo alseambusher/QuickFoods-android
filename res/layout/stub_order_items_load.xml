@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:paddingTop="3dp"
     android:paddingBottom="0dp"
     android:id="@+id/items_load"
@@ -17,7 +19,8 @@
             android:layout_height="match_parent"
             android:layout_weight="2.53"
             android:ems="10"
-            android:hint="Item" />
+            android:hint="Item"
+            style="@style/Theme.Quickfoods.AutoCompleteTextView.Light" />
 
         <EditText
                 android:id="@+id/take_order_count"
@@ -26,16 +29,17 @@
                 android:layout_weight="0.97"
                 android:ems="10"
                 android:inputType="number"
-                android:text="1">
+                android:text="1"
+                style="@style/Theme.Quickfoods.ItemListTextView.Light">
 
                 <requestFocus />
             </EditText>
 
-        <Button
+        <ImageButton
                 android:id="@+id/take_order_add_item_button"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="+"
+                android:src="@android:drawable/ic_menu_add"
                 />
     </LinearLayout>
     <EditText
@@ -45,8 +49,9 @@
         android:textAlignment="center"
         android:textStyle="bold"
         android:textSize="15dp"
-        android:background="#eee"
-        android:padding="5dp" />
+        android:background="@color/theme_background_light"
+        android:textColor="@color/background_floating_material_dark"
+        android:padding="5dp"/>
 
     <ScrollView android:fillViewport="true"
         android:layout_width="match_parent"
