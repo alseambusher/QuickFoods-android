@@ -145,6 +145,10 @@ public class MainActivity extends ActionBarActivity implements
 			fragmentManager.beginTransaction().replace(R.id.container,
 							new PlaceholderTakeOrder()).commit();
 		}
+        else if (mTitle == Constants.tables) {
+            fragmentManager.beginTransaction().replace(R.id.container,
+                    new PlaceholderTables()).commit();
+        }
 		else if (mTitle == Constants.items){
 			fragmentManager.beginTransaction().replace(R.id.container,
                     new PlaceholderItems()).commit();

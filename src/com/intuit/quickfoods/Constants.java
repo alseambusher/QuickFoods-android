@@ -14,9 +14,10 @@ public final class Constants {
     public static String kitchen = "Kitchen";
     public static String history = "History";
     public static String review = "Reviews";
+    public static String tables = "Tables";
 
     // if you change this order the todal order will change
-    public static String[] nav_drawer_items = new String[]{take_order, items,
+    public static String[] nav_drawer_items = new String[]{take_order, tables, items,
             kitchen, history, review};
 
     // colors
