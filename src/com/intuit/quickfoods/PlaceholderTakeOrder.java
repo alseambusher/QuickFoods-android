@@ -3,21 +3,13 @@ package com.intuit.quickfoods;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.print.PrintAttributes;
-import android.print.PrintDocumentAdapter;
-import android.print.PrintJob;
-import android.print.PrintManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -26,9 +18,6 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
 
 import java.util.List;
 
@@ -156,7 +145,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                         // inform kitchen
                         if(Integer.parseInt(OrderManager.getColumn(getActivity(),
                                 food_list_item.getId(),
-                                OrderManager.COLUMN_STATUS)) == Constants.ITEM_IN_KITCHEN){
+                                OrderManager.COLUMN_STATUS)) == Base.ITEM_IN_KITCHEN){
                                 new DataSender(getActivity()).send_delete_order(food_list_item.getId());
                         }
 
@@ -175,7 +164,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
 
         final TextView food_list_item = new TextView(getActivity());
         food_list_item.setTextAppearance(getActivity(), R.style.Theme_Quickfoods_ItemListTextView);
-        food_list_item.setBackgroundResource(Constants.ITEM_BORDER[itemStatus]);
+        food_list_item.setBackgroundResource(Base.ITEM_BORDER[itemStatus]);
         food_list_item.setTextColor(getResources().getColor(R.color.white));
         food_list_item.setId(order_id);
         food_list_item.setLayoutParams(new ViewGroup.LayoutParams(
@@ -192,7 +181,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
         }
 
         // if item is complete it shouldn't be able to dismiss it and shouldn't be able to add directions
-        if (itemStatus != Constants.ITEM_COMPLETE) {
+        if (itemStatus != Base.ITEM_COMPLETE) {
             food_list_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

@@ -1,19 +1,14 @@
 package com.intuit.quickfoods;
 
-import android.app.IntentService;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.nsd.NsdManager;
 import android.net.nsd.NsdServiceInfo;
-import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -45,16 +40,16 @@ public class QuickFoodsService extends Service{
                     Log.d(TAG,data);
                     String command ;
                     try {
-                        command = data.substring(0, data.indexOf(Constants.DELIMITER_COMMAND));
+                        command = data.substring(0, data.indexOf(Base.DELIMITER_COMMAND));
                     } catch (Exception e) { return;}
-                    if (Integer.parseInt(command) == Constants._TO_K_ORDER_SUBMIT){
+                    if (Integer.parseInt(command) == Base._TO_K_ORDER_SUBMIT){
                         Toast.makeText(service, command, Toast.LENGTH_LONG).show();
-                        String notCommand = data.substring(data.indexOf(Constants.DELIMITER_COMMAND)+1,
+                        String notCommand = data.substring(data.indexOf(Base.DELIMITER_COMMAND)+1,
                                 data.length());
-                        StringTokenizer tokenizer = new StringTokenizer(notCommand, Constants.DELIMITER_ITEM_SET);
-                        String[] itemSets = notCommand.split(Constants.DELIMITER_ITEM_SET);
+                        StringTokenizer tokenizer = new StringTokenizer(notCommand, Base.DELIMITER_ITEM_SET);
+                        String[] itemSets = notCommand.split(Base.DELIMITER_ITEM_SET);
                         for(int j=0; j<itemSets.length; j++){
-                            String[] itemSet = itemSets[j].split(Constants.DELIMITER_ITEM);
+                            String[] itemSet = itemSets[j].split(Base.DELIMITER_ITEM);
                             List<String> item = new ArrayList<String>();
                             for(int k=0; k<itemSet.length; k++){
                                 item.add(itemSet[k]);
@@ -71,13 +66,13 @@ public class QuickFoodsService extends Service{
 
                     }
 
-                    else if (Integer.parseInt(command) == Constants._TO_W_ORDER_COMPLETE){
-                        String notCommand = data.substring(data.indexOf(Constants.DELIMITER_COMMAND)+1,
+                    else if (Integer.parseInt(command) == Base._TO_W_ORDER_COMPLETE){
+                        String notCommand = data.substring(data.indexOf(Base.DELIMITER_COMMAND)+1,
                                 data.length());
-                        StringTokenizer tokenizer = new StringTokenizer(notCommand, Constants.DELIMITER_ITEM_SET);
+                        StringTokenizer tokenizer = new StringTokenizer(notCommand, Base.DELIMITER_ITEM_SET);
                         while (tokenizer.hasMoreElements()){
                             String itemSet = (String) tokenizer.nextElement();
-                            StringTokenizer tokenizerItem = new StringTokenizer(itemSet, Constants.DELIMITER_ITEM);
+                            StringTokenizer tokenizerItem = new StringTokenizer(itemSet, Base.DELIMITER_ITEM);
                             List<String> item = new ArrayList<String>();
                             while ((tokenizerItem.hasMoreElements())){
                                 item.add((String)tokenizerItem.nextElement());
@@ -97,13 +92,13 @@ public class QuickFoodsService extends Service{
                         }
                     }
 
-                    else if (Integer.parseInt(command) == Constants._TO_K_DELETE_ORDER){
-                        String notCommand = data.substring(data.indexOf(Constants.DELIMITER_COMMAND)+1,
+                    else if (Integer.parseInt(command) == Base._TO_K_DELETE_ORDER){
+                        String notCommand = data.substring(data.indexOf(Base.DELIMITER_COMMAND)+1,
                                 data.length());
-                        StringTokenizer tokenizer = new StringTokenizer(notCommand, Constants.DELIMITER_ITEM_SET);
+                        StringTokenizer tokenizer = new StringTokenizer(notCommand, Base.DELIMITER_ITEM_SET);
                         while (tokenizer.hasMoreElements()){
                             String itemSet = (String) tokenizer.nextElement();
-                            StringTokenizer tokenizerItem = new StringTokenizer(itemSet, Constants.DELIMITER_ITEM);
+                            StringTokenizer tokenizerItem = new StringTokenizer(itemSet, Base.DELIMITER_ITEM);
                             List<String> item = new ArrayList<String>();
                             while ((tokenizerItem.hasMoreElements())){
                                 item.add((String)tokenizerItem.nextElement());
@@ -130,7 +125,7 @@ public class QuickFoodsService extends Service{
         mNsdHelper.initializeNsd();
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        Boolean isKitchen = prefs.getBoolean(Constants.IS_KITCHEN, false);
+        Boolean isKitchen = prefs.getBoolean(Base.IS_KITCHEN, false);
 
         if (isKitchen) {
             advertise(); // register only if it is kitchen

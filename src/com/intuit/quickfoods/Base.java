@@ -2,7 +2,7 @@ package com.intuit.quickfoods;
 
 import android.graphics.Color;
 
-public final class Constants {
+public final class Base {
 
     // settings
     public static String FTU_SETUP_DISABLED = "FTU Setup Disabled";
@@ -43,5 +43,14 @@ public final class Constants {
     public static int _TO_W_ORDER_COMPLETE = 2;
     public static int _TO_K_ORDER_DIRECTIONS = 3;
     public static int _TO_K_DELETE_ORDER= 4;
+
+    public static class Table {
+        String table_no;
+        int status;
+        Table(String table_no, int status){
+            this.table_no = table_no;
+            this.status = status;
+        }
+    }
 
 }

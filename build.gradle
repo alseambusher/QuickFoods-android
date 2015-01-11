@@ -39,5 +39,6 @@ android {
 
 dependencies {
     compile 'com.github.amlcurran.showcaseview:library:5.0.0'
+    compile 'com.melnykov:floatingactionbutton:1.1.0'
     compile 'com.android.support:appcompat-v7:21.+'
 }

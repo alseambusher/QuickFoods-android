@@ -54,7 +54,7 @@ public class OrderManager {
         return Order(table_no, count, status, item, "");
     }
     public static ContentValues newOrderItemValue(Context context, String table_no, int count, String item, String directions){
-        return Order(table_no, count, Constants.ITEM_CREATED_STATUS, item, ItemsManager.getCategory(context, item), directions);
+        return Order(table_no, count, Base.ITEM_CREATED_STATUS, item, ItemsManager.getCategory(context, item), directions);
     }
     public static ContentValues newOrderItemValue(Context context, String table_no, int count, String item){
        return newOrderItemValue(context, table_no, count, item, "");
@@ -85,7 +85,7 @@ public class OrderManager {
         if (item_id > -1){
             ContentValues orderItem = newOrderItemValue(context, table_no, Integer.parseInt(count), item, directions);
             orderItem.put(ORDER_ID, order_id);
-            orderItem.put(COLUMN_STATUS, Constants.ITEM_IN_KITCHEN);
+            orderItem.put(COLUMN_STATUS, Base.ITEM_IN_KITCHEN);
             SQLiteDatabase db = new DbHelper(context).getWritableDatabase();
             long returnValue = db.insert(TABLE_ORDER, null, orderItem);
             db.close();
@@ -124,7 +124,7 @@ public class OrderManager {
     public static void completeOrderItem(Context context, int order_id){
         SQLiteDatabase db = new DbHelper(context).getWritableDatabase();
         ContentValues newValues = new ContentValues();
-        newValues.put(COLUMN_STATUS, Constants.ITEM_COMPLETE);
+        newValues.put(COLUMN_STATUS, Base.ITEM_COMPLETE);
         db.update(TABLE_ORDER, newValues, ORDER_ID + " = " + order_id, null);
         db.close();
     }
@@ -132,8 +132,8 @@ public class OrderManager {
     public static void submit_order(Context context, String table_no){
         SQLiteDatabase db = new DbHelper(context).getWritableDatabase();
         ContentValues value = new ContentValues();
-        value.put(COLUMN_STATUS, Constants.ITEM_IN_KITCHEN);
-        db.update(TABLE_ORDER, value, COLUMN_TABLE_NO + " = " + table_no +" and "+ COLUMN_STATUS +" = "+ Constants.ITEM_CREATED_STATUS, null);
+        value.put(COLUMN_STATUS, Base.ITEM_IN_KITCHEN);
+        db.update(TABLE_ORDER, value, COLUMN_TABLE_NO + " = " + table_no +" and "+ COLUMN_STATUS +" = "+ Base.ITEM_CREATED_STATUS, null);
         db.close();
     }
 
@@ -152,5 +152,15 @@ public class OrderManager {
         container.put(column, value);
         db.update(TABLE_ORDER, container, ORDER_ID +" = "+ order_id, null);
         db.close();
+    }
+    public static List<Base.Table> getTables(Context context){
+        List<ContentValues> values = getAllItemsFromTable(context,"");
+
+        List<Base.Table> tables = new ArrayList<>();
+
+        for(ContentValues value: values){
+           tables.add(new Base.Table(value.getAsString(COLUMN_TABLE_NO), value.getAsInteger(COLUMN_STATUS)));
+        }
+        return tables;
     }
 }

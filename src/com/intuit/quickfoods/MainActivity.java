@@ -1,8 +1,6 @@
 package com.intuit.quickfoods;
 
 
-import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.app.ActionBar;
 import android.app.FragmentManager;
 import android.content.ComponentName;
@@ -15,17 +13,12 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 public class MainActivity extends ActionBarActivity implements
@@ -53,13 +46,13 @@ public class MainActivity extends ActionBarActivity implements
 
          prefs = PreferenceManager.getDefaultSharedPreferences(this);
         // create FTU shared preference if it doesn't exist already
-        if(!prefs.contains(Constants.FTU_SETUP_DISABLED)){
+        if(!prefs.contains(Base.FTU_SETUP_DISABLED)){
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean(Constants.FTU_SETUP_DISABLED,false);
+            editor.putBoolean(Base.FTU_SETUP_DISABLED,false);
             editor.commit();
         }
         // if it is first time
-        if (!prefs.getBoolean(Constants.FTU_SETUP_DISABLED,false)){
+        if (!prefs.getBoolean(Base.FTU_SETUP_DISABLED,false)){
             //Remove notification bar
             this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
             setContentView(R.layout.welcome);
@@ -70,8 +63,8 @@ public class MainActivity extends ActionBarActivity implements
                 @Override
                 public void onClick(View view) {
                     SharedPreferences.Editor editor = prefs.edit();
-                    editor.putBoolean(Constants.FTU_SETUP_DISABLED,true);
-                    editor.putBoolean(Constants.IS_KITCHEN,false);
+                    editor.putBoolean(Base.FTU_SETUP_DISABLED,true);
+                    editor.putBoolean(Base.IS_KITCHEN,false);
                     editor.commit();
                     finish();
                     startActivity(getIntent());
@@ -83,8 +76,8 @@ public class MainActivity extends ActionBarActivity implements
                 @Override
                 public void onClick(View view) {
                     SharedPreferences.Editor editor = prefs.edit();
-                    editor.putBoolean(Constants.FTU_SETUP_DISABLED,true);
-                    editor.putBoolean(Constants.IS_KITCHEN,true);
+                    editor.putBoolean(Base.FTU_SETUP_DISABLED,true);
+                    editor.putBoolean(Base.IS_KITCHEN,true);
                     editor.commit();
                     finish();
                     startActivity(getIntent());
@@ -104,8 +97,8 @@ public class MainActivity extends ActionBarActivity implements
                     (DrawerLayout) findViewById(R.id.drawer_layout));
 
             // switch to kitchen window id it is kitchen
-            if(prefs.getBoolean(Constants.IS_KITCHEN, false)){
-                onNavigationDrawerItemSelected(Arrays.asList(Constants.nav_drawer_items).indexOf(Constants.kitchen));
+            if(prefs.getBoolean(Base.IS_KITCHEN, false)){
+                onNavigationDrawerItemSelected(Arrays.asList(Base.nav_drawer_items).indexOf(Base.kitchen));
             }
 
             // Setup db
@@ -140,29 +133,29 @@ public class MainActivity extends ActionBarActivity implements
 		// update the main content by replacing fragments
 		FragmentManager fragmentManager = getFragmentManager();
 
-		mTitle = Constants.nav_drawer_items[position];
+		mTitle = Base.nav_drawer_items[position];
 
-		if (mTitle == Constants.take_order) {
+		if (mTitle == Base.take_order) {
 			fragmentManager.beginTransaction().replace(R.id.container,
 							new PlaceholderTakeOrder()).commit();
 		}
-        else if (mTitle == Constants.tables) {
+        else if (mTitle == Base.tables) {
             fragmentManager.beginTransaction().replace(R.id.container,
                     new PlaceholderTables()).commit();
         }
-		else if (mTitle == Constants.items){
+		else if (mTitle == Base.items){
 			fragmentManager.beginTransaction().replace(R.id.container,
                     new PlaceholderItems()).commit();
 		}
-        else if (mTitle == Constants.kitchen){
+        else if (mTitle == Base.kitchen){
             fragmentManager.beginTransaction().replace(R.id.container,
                     new PlaceholderKitchen()).commit();
         }
-        else if (mTitle == Constants.history){
+        else if (mTitle == Base.history){
             fragmentManager.beginTransaction().replace(R.id.container,
                     new PlaceholderHistory()).commit();
         }
-        else if (mTitle == Constants.review){
+        else if (mTitle == Base.review){
             fragmentManager.beginTransaction().replace(R.id.container,
                     new PlaceholderReviews()).commit();
         }
@@ -187,7 +180,7 @@ public class MainActivity extends ActionBarActivity implements
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
-        if (prefs.getBoolean(Constants.FTU_SETUP_DISABLED,false)) {
+        if (prefs.getBoolean(Base.FTU_SETUP_DISABLED,false)) {
             if (!mNavigationDrawerFragment.isDrawerOpen()) {
                 // Only show items in the action bar relevant to this screen
                 // if the drawer is not showing. Otherwise, let the drawer

@@ -2,16 +2,8 @@ package com.intuit.quickfoods;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.RemoteException;
-import android.preference.PreferenceManager;
-import android.util.Log;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.Socket;
 import java.util.List;
 
 public class DataSender {
@@ -64,18 +56,18 @@ public class DataSender {
 
     public void submit_order(String table_no){
         List<ContentValues>items = OrderManager.getAllItemsFromTable(mContext, OrderManager.COLUMN_TABLE_NO +" = "+ table_no
-                +" and "+ OrderManager.COLUMN_STATUS +" = "+ Constants.ITEM_CREATED_STATUS );
+                +" and "+ OrderManager.COLUMN_STATUS +" = "+ Base.ITEM_CREATED_STATUS );
 
         if (items.size() == 0)
             return;
 
-        String data = Constants._TO_K_ORDER_SUBMIT+Constants.DELIMITER_COMMAND;
+        String data = Base._TO_K_ORDER_SUBMIT+ Base.DELIMITER_COMMAND;
         // format order_id,table_no,item_count,category,direction,order_item
         for(ContentValues item:items){
             for (String column: OrderManager.COLUMNS){
-                data += item.getAsString(column) + Constants.DELIMITER_ITEM;
+                data += item.getAsString(column) + Base.DELIMITER_ITEM;
             }
-            data += Constants.DELIMITER_ITEM_SET;
+            data += Base.DELIMITER_ITEM_SET;
         }
 
         sendData(data);
@@ -83,22 +75,22 @@ public class DataSender {
 
     public void send_directions(int order_id, String directions){
         // format order_id,directions
-        String data = Constants._TO_K_ORDER_DIRECTIONS+Constants.DELIMITER_COMMAND;
-        data += order_id + Constants.DELIMITER_ITEM;
+        String data = Base._TO_K_ORDER_DIRECTIONS+ Base.DELIMITER_COMMAND;
+        data += order_id + Base.DELIMITER_ITEM;
         data += directions;
 
         sendData(data);
     }
 
     public void send_delete_order(int order_id){
-        String data = Constants._TO_K_DELETE_ORDER+Constants.DELIMITER_COMMAND;
+        String data = Base._TO_K_DELETE_ORDER+ Base.DELIMITER_COMMAND;
         data += order_id;
         sendData(data);
     }
 
     // sent to waiter
     public void item_complete(int order_id){
-       String data = Constants._TO_W_ORDER_COMPLETE+Constants.DELIMITER_COMMAND;
+       String data = Base._TO_W_ORDER_COMPLETE+ Base.DELIMITER_COMMAND;
         data +=order_id;
         sendData(data);
     }

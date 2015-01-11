@@ -1,11 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.intuit.quickfoods.MainActivity$PlaceholderFragment"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/tables"
-        android:layout_gravity="center_horizontal" />
-</LinearLayout>
+        <ListView
+            android:id="@+id/tables"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+        </ListView>
+        <com.melnykov.fab.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"
+            android:src="@android:drawable/ic_input_add"
+            android:tint="@android:color/white"
+            fab:fab_colorNormal="@color/theme_background_dark"
+            fab:fab_colorPressed="@color/theme_background_light"
+            fab:fab_colorRipple="@color/theme_background_light" />
+</FrameLayout>

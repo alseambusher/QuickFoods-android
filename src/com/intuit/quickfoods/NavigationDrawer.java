@@ -2,7 +2,6 @@ package com.intuit.quickfoods;
 
 
 import android.app.Activity;
-import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -13,7 +12,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -113,13 +111,13 @@ public class NavigationDrawer extends Fragment{
 		mDrawerListView.setAdapter(new ArrayAdapter<String>(getActionBar()
 				.getThemedContext(),
 				android.R.layout.simple_list_item_activated_1,
-				android.R.id.text1, Constants.nav_drawer_items) {
+				android.R.id.text1, Base.nav_drawer_items) {
 				// setting color of items in nav drawer
 					@Override
 					public View getView(int position, View convertView,ViewGroup parent){
 						View view = super.getView(position, convertView, parent);
 						TextView textView = (TextView) view.findViewById(android.R.id.text1);
-						textView.setTextColor(Constants.nav_drawer_text_color);
+						textView.setTextColor(Base.nav_drawer_text_color);
 						return view;
 					}
 		});

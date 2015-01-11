@@ -2,7 +2,6 @@ package com.intuit.quickfoods;
 
 import android.content.ContentValues;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,7 +78,7 @@ public class PlaceholderKitchen extends PlaceholderBase {
         if (!categoryValue.isEmpty()){
             filterQuery.add(OrderManager.COLUMN_CATEGORY+" = '"+ categoryValue +"'");
         }
-        filterQuery.add(OrderManager.COLUMN_STATUS + " = " + Constants.ITEM_IN_KITCHEN);
+        filterQuery.add(OrderManager.COLUMN_STATUS + " = " + Base.ITEM_IN_KITCHEN);
         return OrderManager.getAllItemsFromTable(getActivity(), filterQuery);
     }
 
@@ -115,11 +114,11 @@ public class PlaceholderKitchen extends PlaceholderBase {
         // todo remove hardcoded color categories
         String category = OrderManager.getColumn(getActivity(), order_id, OrderManager.COLUMN_CATEGORY);
         if (category.equals("non veg"))
-            food_list_item.setBackgroundResource(Constants.ITEM_BORDER[0]);
+            food_list_item.setBackgroundResource(Base.ITEM_BORDER[0]);
         else if (category.equals("drinks"))
-            food_list_item.setBackgroundResource(Constants.ITEM_BORDER[1]);
+            food_list_item.setBackgroundResource(Base.ITEM_BORDER[1]);
         else
-            food_list_item.setBackgroundResource(Constants.ITEM_BORDER[2]);
+            food_list_item.setBackgroundResource(Base.ITEM_BORDER[2]);
 
         food_list_item.setTextColor(getResources().getColor(R.color.white));
         food_list_item.setId(order_id);
@@ -137,7 +136,7 @@ public class PlaceholderKitchen extends PlaceholderBase {
         }
 
         // if item is complete it shouldn't be able to dismiss it
-        if (itemStatus != Constants.ITEM_COMPLETE) {
+        if (itemStatus != Base.ITEM_COMPLETE) {
             food_list_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
