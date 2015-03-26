@@ -113,12 +113,12 @@ public class PlaceholderKitchen extends PlaceholderBase {
 
         // todo remove hardcoded color categories
         String category = OrderManager.getColumn(getActivity(), order_id, OrderManager.COLUMN_CATEGORY);
-        if (category.equals("non veg"))
+        if (category.equals(Base.NON_VEG))
             food_list_item.setBackgroundResource(Base.ITEM_BORDER[0]);
-        else if (category.equals("drinks"))
-            food_list_item.setBackgroundResource(Base.ITEM_BORDER[1]);
-        else
+        else if (category.equals(Base.VEG))
             food_list_item.setBackgroundResource(Base.ITEM_BORDER[2]);
+        else
+            food_list_item.setBackgroundResource(Base.ITEM_BORDER[1]);
 
         food_list_item.setTextColor(getResources().getColor(R.color.white));
         food_list_item.setId(order_id);

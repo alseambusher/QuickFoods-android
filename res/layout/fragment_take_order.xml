@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.intuit.quickfoods.MainActivity$PlaceholderFragment" >
+    tools:context="com.intuit.quickfoods.MainActivity$PlaceholderFragment">
 
     <TextView
         android:id="@+id/section_label"
@@ -19,7 +19,7 @@
         android:divider="#000"
         android:gravity="top"
         android:orientation="vertical"
-        android:showDividers="end" >
+        android:showDividers="end">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,22 +36,47 @@
                 android:inputType="number" />
 
             <ImageButton
-                android:id="@+id/button1"
+                android:id="@+id/b_select_table"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:ellipsize="start"
                 android:elevation="2dp"
-                android:src="@android:drawable/ic_menu_send"/>
+                android:ellipsize="start"
+                android:src="@android:drawable/ic_menu_send" />
 
         </LinearLayout>
 
+        <TextView
+            android:id='@+id/menu_breadcrumbs'
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/theme_background_light"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="Categories"
+            android:textAlignment="center"
+            android:textColor="@color/background_floating_material_dark"
+            android:textSize="18dp" />
+
+        <ScrollView android:fillViewport="true"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp">
+            <GridView
+                android:id="@+id/menu_items"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:numColumns="3" >
+            </GridView>
+        </ScrollView>
+
         <ViewStub
             android:id="@+id/stub_import_order_items_load"
-            android:inflatedId="@+id/stub_order_items_load"
-            android:layout="@layout/stub_order_items_load"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom" />
+            android:layout_gravity="bottom"
+            android:inflatedId="@+id/stub_order_items_load"
+            android:layout="@layout/stub_order_items" />
     </LinearLayout>
 
 </RelativeLayout>

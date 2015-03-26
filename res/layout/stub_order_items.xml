@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/items_load"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="0dp"
+    android:paddingTop="3dp">
+
+    <TextView
+        android:id='@+id/menu_breadcrumbs'
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/theme_background_light"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="Order"
+        android:textAlignment="center"
+        android:textColor="@color/background_floating_material_dark"
+        android:textSize="18dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/take_order_dismissable_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+
+            <Button
+                android:id="@+id/submit_bill"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:background="@drawable/red_button"
+                android:text="Submit" />
+
+            <Button
+                android:id="@+id/make_bill"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:background="@drawable/red_button"
+                android:text="Create Bill" />
+
+            <EditText
+                android:id="@+id/take_order_count"
+                style="@style/Theme.Quickfoods.ItemListTextView.Light"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:ems="3"
+                android:inputType="number"
+                android:text="1"></EditText>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

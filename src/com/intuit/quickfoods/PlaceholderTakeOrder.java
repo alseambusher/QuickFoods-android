@@ -10,15 +10,17 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlaceholderTakeOrder extends PlaceholderBase {
@@ -35,6 +37,34 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
 			Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_take_order,
 				container, false);
+
+        GridView grid = (GridView) view.findViewById(R.id.menu_items);
+        final List list=new ArrayList<String>();
+
+        list.add("Dynamic 1");
+        list.add("Dynamic 2");
+        list.add("Dynamic 3");
+        list.add("Dynamic 4");
+        list.add("Dynamic 5");
+        list.add("Dynamic 6");
+        list.add("Dynamic 7");
+        list.add("Dynamic 8");
+        list.add("Dynamic 9");
+
+        ArrayAdapter<String> adp=new ArrayAdapter<String> (getActivity(),
+                R.layout.menu_item_tile,list);
+        //grid.setNumColumns(3);
+        //grid.setBackgroundColor(Color.BLACK);
+        //grid.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        grid.setAdapter(adp);
+
+        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+                                    long arg3) {
+            }
+        });
         /*
         new ShowcaseView.Builder(getActivity())
                 .setTarget(new ActionViewTarget(getActivity(), ActionViewTarget.Type.HOME))
@@ -45,7 +75,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                 */
 
         // GO BUTTON
-		ImageButton table_no_go = (ImageButton) view.findViewById(R.id.button1);
+		ImageButton table_no_go = (ImageButton) view.findViewById(R.id.b_select_table);
 		table_no_go.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -66,17 +96,10 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                 food_items = OrderManager.getAllItemsFromTable(getActivity(), OrderManager.COLUMN_TABLE_NO +" = "+ table_no_value);
                 refreshFoodItemList();
 
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                        android.R.layout.simple_dropdown_item_1line, ItemsManager.getAllItems(getActivity(), ItemsManager.COLUMN_ITEM));
-                final AutoCompleteTextView take_order_add_item= (AutoCompleteTextView)
-                        view.findViewById(R.id.take_order_add_item);
-                take_order_add_item.setAdapter(adapter);
-                take_order_add_item.requestFocus();
-
-
                 final TextView newItemCount = (TextView) view.findViewById(R.id.take_order_count);
 
                 // ADD ITEM BUTTON CLICK
+                /*
                 ImageButton add_item = (ImageButton) view.findViewById(R.id.take_order_add_item_button);
                 add_item.setOnClickListener(new OnClickListener() {
                     @Override
@@ -100,6 +123,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                         }
                     }
                 });
+                */
 
                 // SUBMIT BUTTON CLICK
                 Button submit_button = (Button) view.findViewById(R.id.submit_bill);

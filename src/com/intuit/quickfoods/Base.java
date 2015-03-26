@@ -16,6 +16,9 @@ public final class Base {
     public static String review = "Reviews";
     public static String tables = "Tables";
 
+    public static String VEG = "veg";
+    public static String NON_VEG = "non veg";
+
     // if you change this order the todal order will change
     public static String[] nav_drawer_items = new String[]{take_order, tables, items,
             kitchen, history};
