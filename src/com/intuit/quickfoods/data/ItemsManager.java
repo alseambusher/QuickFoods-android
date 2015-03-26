@@ -84,6 +84,25 @@ public class ItemsManager {
         return values.toArray(new String[values.size()]);
     }
 
+    // returns the food item names for a given category
+    public static List<ContentValues> getAllItemsForCategory(Context context, String category){
+        List<ContentValues> values = new ArrayList<ContentValues>();
+        SQLiteDatabase db = new DbHelper(context).getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_ITEMS, COLUMNS, COLUMN_CATEGORY + "= '" + category +"'", null,
+                null,
+                null,
+                null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()){
+            values.add(toItem(cursor));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        db.close();
+        return values;
+    }
+
     public static int getId(Context context, String item){
         SQLiteDatabase db = new DbHelper(context).getReadableDatabase();
         Cursor cursor = db.query(TABLE_ITEMS, new String[]{ITEM_ID}, COLUMN_ITEM + " = '" + item + "'", null, null, null, null);

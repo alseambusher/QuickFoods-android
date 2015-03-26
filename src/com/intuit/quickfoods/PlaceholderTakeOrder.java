@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.intuit.quickfoods.data.Base;
+import com.intuit.quickfoods.data.ItemsManager;
 import com.intuit.quickfoods.data.MenuItem;
 import com.intuit.quickfoods.data.OrderManager;
 import com.intuit.quickfoods.helpers.BillPrinterManager;
@@ -49,9 +50,9 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
 
         Gson gson = new Gson();
         String json = "{'name':'main', 'subMenuItems':[{'name':'Starters'},{'name':'Soups and Salads'},{'name':'International'},{'name':'Asian'},{'name':'Chinese'},{'name':'Regional'},{'name':'Beverages', " +
-                "subMenuItems:[{'name':'Milk Shakes'},{'name':'Coffee'}]}]}";
+                "subMenuItems:[{'name':'Milk Shakes'},{'name':'Coffee'},{'name':'Tea'}," +
+                "{'name':'Others'}]}]}";
         final MenuItem menu = gson.fromJson(json, MenuItem.class);
-        //Log.d("gson",);
 
         final GridView grid = (GridView) view.findViewById(R.id.menu_items);
         final List list=new ArrayList<String>();
@@ -70,18 +71,21 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
                                     long arg3) {
-                String clicked = (String)list.get(arg2);
-                list.clear();
-                for(MenuItem item: menu.subMenuItems){
-                    if(item.name == clicked){
-                        if(item.subMenuItems != null){
-                            for(MenuItem subMenuItem: item.subMenuItems){
-                                list.add(subMenuItem.name);
-                            }
-
+                MenuItem clicked = menu.search((String)list.get(arg2));
+                if(clicked != null) {
+                    list.clear();
+                    if (clicked.subMenuItems != null) {
+                        for (MenuItem subMenuItem : clicked.subMenuItems) {
+                            list.add(subMenuItem.name);
                         }
-                        else{
-                            // TODO equal to null
+                    } else {
+                        for (ContentValues food_menu_item : ItemsManager.getAllItemsForCategory
+                                (getActivity(),
+                                        clicked.name)) {
+                            list.add(food_menu_item.getAsString(ItemsManager.COLUMN_ITEM));
+                            grid.setNumColumns(1);
+                            // TODO change onlick
+
                         }
                     }
                 }

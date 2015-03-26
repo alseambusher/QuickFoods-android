@@ -54,67 +54,55 @@ public class DbHelper extends SQLiteOpenHelper {
     public void addDummyItems(){
         // Starters, Salads and Soups, Sandwiches, Pizzeria, Pasta, International, Asian, Regional, Desserts, Beverages
         List<ContentValues> values = new ArrayList<ContentValues>();
-        values.add(ItemsManager.Item("Starters:non veg", "desc", "59", "Crisp fried Prawns with Sambal Oelek"));
-        values.add(ItemsManager.Item("Starters:veg", "desc", "59", "Mezee Platter with Hummus, Bangkadesh, Olives and Pakistan "));
-        values.add(ItemsManager.Item("Starters:non veg", "desc", "59", "Unfried Prawns with Sambal Oelek"));
-        values.add(ItemsManager.Item("Starters:veg", "desc", "59", "Exotic Vegetable and Pine Nut Basket"));
-        values.add(ItemsManager.Item("Starters:veg", "desc", "59", "Vegetable Nuts and bolts"));
-        values.add(ItemsManager.Item("Starters:non veg", "desc", "59", "Fried Dragons with Paneer"));
+        values.add(ItemsManager.Item("Starters", "non veg", "59", "Crisp fried Prawns with Sambal Oelek"));
+        values.add(ItemsManager.Item("Starters", "veg", "59", "Mezee Platter with Hummus, Bangkadesh, Olives and Pakistan "));
+        values.add(ItemsManager.Item("Starters", "non veg", "59", "Unfried Prawns with Sambal " +
+                "Oelek"));
+        values.add(ItemsManager.Item("Starters", "veg", "59", "Exotic Vegetable and Pine Nut " +
+                "Basket"));
+        values.add(ItemsManager.Item("Starters", "veg", "59", "Vegetable Nuts and bolts"));
+        values.add(ItemsManager.Item("Starters", "non veg", "59",
+                "Fried Dragons with Paneer"));
 
-        values.add(ItemsManager.Item("Soups and Salads:non veg", "desc", "59", "Crisp fried Prawns with Sambal Oelek"));
-        values.add(ItemsManager.Item("Soups and Salads:veg", "desc", "59", "Mezee Platter with Hummus, Bangkadesh, Olives and Pakistan "));
-        values.add(ItemsManager.Item("Soups and Salads:non veg", "desc", "59", "Unfried Prawns with Sambal Oelek"));
-        values.add(ItemsManager.Item("Soups and Salads:veg", "desc", "59", "Exotic Vegetable and Pine Nut Basket"));
-        values.add(ItemsManager.Item("Soups and Salads:veg", "desc", "59", "Vegetable Nuts and bolts"));
-        values.add(ItemsManager.Item("Soups and Salads:non veg", "desc", "59", "Fried Dragons with Paneer"));
+        values.add(ItemsManager.Item("Soups and Salads", "non veg", "59", "Crisp fried Prawns with Sambal Oelek"));
+        values.add(ItemsManager.Item("Soups and Salads", "veg", "59", "Mezee Platter with Hummus, Bangkadesh, Olives and Pakistan "));
+        values.add(ItemsManager.Item("Soups and Salads", "veg", "59", "Vegetable Nuts and bolts"));
 
-        values.add(ItemsManager.Item("International:non veg", "desc", "59", "Crisp fried Prawns with Sambal Oelek"));
-        values.add(ItemsManager.Item("International:veg", "desc", "59", "Mezee Platter with Hummus, Bangkadesh, Olives and Pakistan "));
-        values.add(ItemsManager.Item("International:non veg", "desc", "59", "Unfried Prawns with Sambal Oelek"));
-        values.add(ItemsManager.Item("International:veg", "desc", "59", "Exotic Vegetable and Pine Nut Basket"));
-        values.add(ItemsManager.Item("International:veg", "desc", "59", "Vegetable Nuts and bolts"));
-        values.add(ItemsManager.Item("International:non veg", "desc", "59", "Fried Dragons with Paneer"));
+        values.add(ItemsManager.Item("International", "non veg", "59", "Crisp fried Prawns with Sambal Oelek"));
+        values.add(ItemsManager.Item("International", "veg", "59", "Mezee Platter with Hummus, Bangkadesh, Olives and Pakistan "));
+        values.add(ItemsManager.Item("International", "veg", "59", "Vegetable Nuts and bolts"));
 
-        values.add(ItemsManager.Item("Asian:non veg", "desc", "59", "Crisp fried Prawns with Sambal Oelek"));
-        values.add(ItemsManager.Item("Asian:veg", "desc", "59", "Mezee Platter with Hummus, Bangkadesh, Olives and Pakistan "));
-        values.add(ItemsManager.Item("Asian:non veg", "desc", "59", "Unfried Prawns with Sambal Oelek"));
-        values.add(ItemsManager.Item("Asian:veg", "desc", "59", "Exotic Vegetable and Pine Nut Basket"));
-        values.add(ItemsManager.Item("Asian:veg", "desc", "59", "Vegetable Nuts and bolts"));
-        values.add(ItemsManager.Item("Asian:non veg", "desc", "59", "Fried Dragons with Paneer"));
+        values.add(ItemsManager.Item("Asian", "non veg", "59", "Crisp fried Prawns with Sambal Oelek"));
+        values.add(ItemsManager.Item("Asian", "veg", "59", "Mezee Platter with Hummus, Bangkadesh, Olives and Pakistan "));
+        values.add(ItemsManager.Item("Asian", "veg", "59", "Vegetable Nuts and bolts"));
 
-        values.add(ItemsManager.Item("Chinese:non veg", "desc", "59", "Crisp fried Prawns with Sambal Oelek"));
-        values.add(ItemsManager.Item("Chinese:veg", "desc", "59", "Mezee Platter with Hummus, Bangkadesh, Olives and Pakistan "));
-        values.add(ItemsManager.Item("Chinese:non veg", "desc", "59", "Unfried Prawns with Sambal Oelek"));
-        values.add(ItemsManager.Item("Chinese:veg", "desc", "59", "Exotic Vegetable and Pine Nut Basket"));
-        values.add(ItemsManager.Item("Chinese:veg", "desc", "59", "Vegetable Nuts and bolts"));
-        values.add(ItemsManager.Item("Chinese:non veg", "desc", "59", "Fried Dragons with Paneer"));
+        values.add(ItemsManager.Item("Chinese", "non veg", "59", "Crisp fried Prawns with Sambal Oelek"));
+        values.add(ItemsManager.Item("Chinese", "veg", "59", "Mezee Platter with Hummus, Bangkadesh, Olives and Pakistan "));
+        values.add(ItemsManager.Item("Chinese", "veg", "59", "Vegetable Nuts and bolts"));
 
-        values.add(ItemsManager.Item("Regional:non veg", "desc", "59", "Crisp fried Prawns with Sambal Oelek"));
-        values.add(ItemsManager.Item("Regional:veg", "desc", "59", "Mezee Platter with Hummus, Bangkadesh, Olives and Pakistan "));
-        values.add(ItemsManager.Item("Regional:non veg", "desc", "59", "Unfried Prawns with Sambal Oelek"));
-        values.add(ItemsManager.Item("Regional:veg", "desc", "59", "Exotic Vegetable and Pine Nut Basket"));
-        values.add(ItemsManager.Item("Regional:veg", "desc", "59", "Vegetable Nuts and bolts"));
-        values.add(ItemsManager.Item("Regional:non veg", "desc", "59", "Fried Dragons with Paneer"));
+        values.add(ItemsManager.Item("Regional", "non veg", "59", "Crisp fried Prawns with Sambal Oelek"));
+        values.add(ItemsManager.Item("Regional", "veg", "59", "Mezee Platter with Hummus, Bangkadesh, Olives and Pakistan "));
+        values.add(ItemsManager.Item("Regional", "veg", "59", "Vegetable Nuts and bolts"));
 
-        values.add(ItemsManager.Item("Beverages:Milk Shakes", "desc", "150", "Vanilla"));
-        values.add(ItemsManager.Item("Beverages:Milk Shakes", "desc", "150", "Chocolate"));
-        values.add(ItemsManager.Item("Beverages:Milk Shakes", "desc", "150", "Strawberry"));
-        values.add(ItemsManager.Item("Beverages:Milk Shakes", "desc", "150", "Oreo"));
+        values.add(ItemsManager.Item("Milk Shakes", "veg", "150", "Vanilla"));
+        values.add(ItemsManager.Item("Milk Shakes", "veg", "150", "Chocolate"));
+        values.add(ItemsManager.Item("Milk Shakes", "veg", "150", "Strawberry"));
+        values.add(ItemsManager.Item("Milk Shakes", "veg", "150", "Oreo"));
 
-        values.add(ItemsManager.Item("Beverages:Coffee", "desc", "150", "Vanilla"));
-        values.add(ItemsManager.Item("Beverages:Coffee", "desc", "150", "Chocolate"));
-        values.add(ItemsManager.Item("Beverages:Coffee", "desc", "150", "Strawberry"));
-        values.add(ItemsManager.Item("Beverages:Coffee", "desc", "150", "Oreo"));
+        values.add(ItemsManager.Item("Coffee", "veg", "150", "Vanilla"));
+        values.add(ItemsManager.Item("Coffee", "veg", "150", "Chocolate"));
+        values.add(ItemsManager.Item("Coffee", "veg", "150", "Strawberry"));
+        values.add(ItemsManager.Item("Coffee", "veg", "150", "Oreo"));
 
-        values.add(ItemsManager.Item("Beverages:Tea", "desc", "150", "Vanilla"));
-        values.add(ItemsManager.Item("Beverages:Tea", "desc", "150", "Chocolate"));
-        values.add(ItemsManager.Item("Beverages:Tea", "desc", "150", "Strawberry"));
-        values.add(ItemsManager.Item("Beverages:Tea", "desc", "150", "Oreo"));
+        values.add(ItemsManager.Item("Tea", "veg", "150", "Vanilla"));
+        values.add(ItemsManager.Item("Tea", "veg", "150", "Chocolate"));
+        values.add(ItemsManager.Item("Tea", "veg", "150", "Strawberry"));
+        values.add(ItemsManager.Item("Tea", "veg", "150", "Oreo"));
 
-        values.add(ItemsManager.Item("Beverages:Others", "desc", "150", "Vanilla"));
-        values.add(ItemsManager.Item("Beverages:Others", "desc", "150", "Chocolate"));
-        values.add(ItemsManager.Item("Beverages:Others", "desc", "150", "Strawberry"));
-        values.add(ItemsManager.Item("Beverages:Others", "desc", "150", "Oreo"));
+        values.add(ItemsManager.Item("Others", "veg", "150", "Vanilla"));
+        values.add(ItemsManager.Item("Others", "veg", "150", "Chocolate"));
+        values.add(ItemsManager.Item("Others", "veg", "150", "Strawberry"));
+        values.add(ItemsManager.Item("Others", "veg", "150", "Oreo"));
 
         for (ContentValues value: values){
             mDb.insert(ItemsManager.TABLE_ITEMS, null, value);
