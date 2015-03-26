@@ -50,8 +50,8 @@ public final class Base {
     public static int _TO_K_DELETE_ORDER= 4;
 
     public static class Table {
-        String table_no;
-        int status;
+        public String table_no;
+        public int status;
         Table(String table_no, int status){
             this.table_no = table_no;
             this.status = status;

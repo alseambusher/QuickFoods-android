@@ -20,7 +20,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.intuit.quickfoods.data.Base;
+import com.intuit.quickfoods.data.MenuItem;
 import com.intuit.quickfoods.data.OrderManager;
 import com.intuit.quickfoods.helpers.BillPrinterManager;
 import com.intuit.quickfoods.helpers.DataSender;
@@ -38,26 +40,24 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
 	public PlaceholderTakeOrder() {
 		super();
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_take_order,
 				container, false);
 
-        GridView grid = (GridView) view.findViewById(R.id.menu_items);
+        Gson gson = new Gson();
+        String json = "{'name':'main', 'subMenuItems':[{'name':'Starters'},{'name':'Soups and Salads'},{'name':'International'},{'name':'Asian'},{'name':'Chinese'},{'name':'Regional'},{'name':'Beverages', " +
+                "subMenuItems:[{'name':'Milk Shakes'},{'name':'Coffee'}]}]}";
+        final MenuItem menu = gson.fromJson(json, MenuItem.class);
+        //Log.d("gson",);
+
+        final GridView grid = (GridView) view.findViewById(R.id.menu_items);
         final List list=new ArrayList<String>();
-
-        list.add("Dynamic 1");
-        list.add("Dynamic 2");
-        list.add("Dynamic 3");
-        list.add("Dynamic 4");
-        list.add("Dynamic 5");
-        list.add("Dynamic 6");
-        list.add("Dynamic 7");
-        list.add("Dynamic 8");
-        list.add("Dynamic 9");
-
+        for(MenuItem item: menu.subMenuItems){
+            list.add(item.name);
+        }
         ArrayAdapter<String> adp=new ArrayAdapter<String> (getActivity(),
                 R.layout.menu_item_tile,list);
         //grid.setNumColumns(3);
@@ -70,6 +70,22 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
                                     long arg3) {
+                String clicked = (String)list.get(arg2);
+                list.clear();
+                for(MenuItem item: menu.subMenuItems){
+                    if(item.name == clicked){
+                        if(item.subMenuItems != null){
+                            for(MenuItem subMenuItem: item.subMenuItems){
+                                list.add(subMenuItem.name);
+                            }
+
+                        }
+                        else{
+                            // TODO equal to null
+                        }
+                    }
+                }
+                grid.invalidateViews();
             }
         });
         /*
