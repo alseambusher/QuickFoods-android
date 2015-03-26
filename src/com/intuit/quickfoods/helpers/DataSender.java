@@ -1,8 +1,12 @@
-package com.intuit.quickfoods;
+package com.intuit.quickfoods.helpers;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.RemoteException;
+
+import com.intuit.quickfoods.data.Base;
+import com.intuit.quickfoods.MainActivity;
+import com.intuit.quickfoods.data.OrderManager;
 
 import java.util.List;
 
@@ -55,8 +59,8 @@ public class DataSender {
     }
 
     public void submit_order(String table_no){
-        List<ContentValues>items = OrderManager.getAllItemsFromTable(mContext, OrderManager.COLUMN_TABLE_NO +" = "+ table_no
-                +" and "+ OrderManager.COLUMN_STATUS +" = "+ Base.ITEM_CREATED_STATUS );
+        List<ContentValues>items = OrderManager.getAllItemsFromTable(mContext, OrderManager.COLUMN_TABLE_NO + " = " + table_no
+                + " and " + OrderManager.COLUMN_STATUS + " = " + Base.ITEM_CREATED_STATUS);
 
         if (items.size() == 0)
             return;

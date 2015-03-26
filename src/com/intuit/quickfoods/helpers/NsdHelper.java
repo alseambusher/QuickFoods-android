@@ -1,4 +1,4 @@
-package com.intuit.quickfoods;
+package com.intuit.quickfoods.helpers;
 
 import android.content.Context;
 import android.net.nsd.NsdServiceInfo;

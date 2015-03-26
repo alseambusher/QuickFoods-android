@@ -1,10 +1,11 @@
-package com.intuit.quickfoods;
+package com.intuit.quickfoods.data;
 
-import android.app.Application;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.intuit.quickfoods.helpers.DbHelper;
 
 import java.util.ArrayList;
 import java.util.List;

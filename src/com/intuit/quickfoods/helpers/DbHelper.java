@@ -1,10 +1,13 @@
-package com.intuit.quickfoods;
+package com.intuit.quickfoods.helpers;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import com.intuit.quickfoods.data.ItemsManager;
+import com.intuit.quickfoods.data.OrderManager;
 
 import java.util.ArrayList;
 import java.util.List;

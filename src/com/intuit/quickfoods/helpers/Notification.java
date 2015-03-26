@@ -1,4 +1,4 @@
-package com.intuit.quickfoods;
+package com.intuit.quickfoods.helpers;
 
 import android.app.Activity;
 import android.app.NotificationManager;
@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.support.v4.app.NotificationCompat;
+
+import com.intuit.quickfoods.R;
 
 public class Notification {
     public static int mId = 1337;

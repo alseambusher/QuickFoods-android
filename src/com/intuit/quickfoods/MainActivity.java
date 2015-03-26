@@ -19,6 +19,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import com.intuit.quickfoods.data.Base;
+import com.intuit.quickfoods.helpers.DbHelper;
+import com.intuit.quickfoods.helpers.NavigationDrawer;
+
 import java.util.Arrays;
 
 public class MainActivity extends ActionBarActivity implements
@@ -36,8 +40,8 @@ public class MainActivity extends ActionBarActivity implements
 	 */
 	private CharSequence mTitle;
 
-    private Intent mQuickFoodsServiceIntent;
-    IQuickFoodsService mIQuickFoodsService;
+    public Intent mQuickFoodsServiceIntent;
+    public IQuickFoodsService mIQuickFoodsService;
     SharedPreferences prefs;
 
 	@Override

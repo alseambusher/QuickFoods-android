@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
+import com.intuit.quickfoods.data.ItemsManager;
+
 public class PlaceholderItems extends PlaceholderBase {
 	
 	public PlaceholderItems() {
@@ -20,7 +22,7 @@ public class PlaceholderItems extends PlaceholderBase {
 				container, false);
 		
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_dropdown_item_1line, ItemsManager.getAllItems(getActivity(),ItemsManager.COLUMN_ITEM));
+                android.R.layout.simple_dropdown_item_1line, ItemsManager.getAllItems(getActivity(), ItemsManager.COLUMN_ITEM));
         AutoCompleteTextView search_items= (AutoCompleteTextView)
                 view.findViewById(R.id.search_items);
         search_items.setAdapter(adapter);

@@ -1,4 +1,4 @@
-package com.intuit.quickfoods;
+package com.intuit.quickfoods.helpers;
 
 
 import android.app.Activity;
@@ -23,6 +23,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.intuit.quickfoods.data.Base;
+import com.intuit.quickfoods.R;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation

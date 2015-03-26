@@ -1,6 +1,8 @@
-package com.intuit.quickfoods;
+package com.intuit.quickfoods.data;
 
 import android.graphics.Color;
+
+import com.intuit.quickfoods.R;
 
 public final class Base {
 

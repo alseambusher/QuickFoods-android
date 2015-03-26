@@ -11,6 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.intuit.quickfoods.data.Base;
+import com.intuit.quickfoods.data.OrderManager;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;

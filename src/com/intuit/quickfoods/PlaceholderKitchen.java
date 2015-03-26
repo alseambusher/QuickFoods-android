@@ -12,6 +12,13 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.intuit.quickfoods.data.Base;
+import com.intuit.quickfoods.data.ItemsManager;
+import com.intuit.quickfoods.data.OrderManager;
+import com.intuit.quickfoods.helpers.DataSender;
+import com.intuit.quickfoods.helpers.SwipeDismissListViewTouchListener;
+import com.intuit.quickfoods.helpers.SwipeDismissTouchListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +47,7 @@ public class PlaceholderKitchen extends PlaceholderBase {
         tableNo = (EditText) view.findViewById(R.id.kitchen_table_no);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_dropdown_item_1line, ItemsManager.getAllItems(getActivity(),ItemsManager.COLUMN_ITEM));
+                android.R.layout.simple_dropdown_item_1line, ItemsManager.getAllItems(getActivity(), ItemsManager.COLUMN_ITEM));
         search_items.setAdapter(adapter);
 
         food_items = getFoodItems();

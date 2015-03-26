@@ -20,6 +20,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.intuit.quickfoods.data.Base;
+import com.intuit.quickfoods.data.OrderManager;
+import com.intuit.quickfoods.helpers.BillPrinterManager;
+import com.intuit.quickfoods.helpers.DataSender;
+import com.intuit.quickfoods.helpers.SwipeDismissListViewTouchListener;
+import com.intuit.quickfoods.helpers.SwipeDismissTouchListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,7 +100,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                     ((ViewStub) view.findViewById(R.id.stub_import_order_items_load)).inflate();
                 } catch (Exception e){}
 
-                food_items = OrderManager.getAllItemsFromTable(getActivity(), OrderManager.COLUMN_TABLE_NO +" = "+ table_no_value);
+                food_items = OrderManager.getAllItemsFromTable(getActivity(), OrderManager.COLUMN_TABLE_NO + " = " + table_no_value);
                 refreshFoodItemList();
 
                 final TextView newItemCount = (TextView) view.findViewById(R.id.take_order_count);

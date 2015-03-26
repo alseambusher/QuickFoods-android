@@ -1,17 +1,13 @@
-package com.intuit.quickfoods;
+package com.intuit.quickfoods.helpers;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
-import android.app.ListActivity;
-import android.app.ListFragment;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 public class SwipeDismissTouchListener implements View.OnTouchListener {
     // Cached ViewConfiguration and system-wide constant values
