@@ -55,6 +55,12 @@ public class MainActivity extends ActionBarActivity implements
             editor.putBoolean(Base.FTU_SETUP_DISABLED,false);
             editor.commit();
         }
+        // TODO download menu items from the server and store that instead of sample menu items
+        if(!prefs.contains(Base.MENU_ITEMS)){
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString(Base.MENU_ITEMS, Base.SAMPLE_MENU);
+            editor.commit();
+        }
         // if it is first time
         if (!prefs.getBoolean(Base.FTU_SETUP_DISABLED,false)){
             //Remove notification bar

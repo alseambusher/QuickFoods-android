@@ -10,6 +10,7 @@ public final class Base {
     public static String FTU_SETUP_DISABLED = "FTU Setup Disabled";
     public static String FTU_HELP_DISABLED= "FTU Help Disabled";
     public static String IS_KITCHEN = "is_kitchen";
+    public static String MENU_ITEMS = "menu items";
 
     public static String take_order = "Take Order";
     public static String items = "Items";
@@ -20,6 +21,10 @@ public final class Base {
 
     public static String VEG = "veg";
     public static String NON_VEG = "non veg";
+
+    public static String SAMPLE_MENU = "{'name':'main', 'subMenuItems':[{'name':'Starters'},{'name':'Soups and Salads'},{'name':'International'},{'name':'Asian'},{'name':'Chinese'},{'name':'Regional'},{'name':'Beverages', " +
+            "subMenuItems:[{'name':'Milk Shakes'},{'name':'Coffee'},{'name':'Tea'}," +
+            "{'name':'Others'}]}]}";
 
     // if you change this order the todal order will change
     public static String[] nav_drawer_items = new String[]{take_order, tables, items,

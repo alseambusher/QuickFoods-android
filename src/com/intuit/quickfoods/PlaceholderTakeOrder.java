@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,9 +35,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlaceholderTakeOrder extends PlaceholderBase {
-    public View view;
-	public ViewGroup itemsContainer;
-    public List<ContentValues> food_items;
+    public View m_view;
+	public ViewGroup m_itemsContainer;
+    public List<ContentValues> m_food_items;
 
 	public PlaceholderTakeOrder() {
 		super();
@@ -45,34 +46,54 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		view = inflater.inflate(R.layout.fragment_take_order,
+		m_view = inflater.inflate(R.layout.fragment_take_order,
 				container, false);
 
         Gson gson = new Gson();
-        String json = "{'name':'main', 'subMenuItems':[{'name':'Starters'},{'name':'Soups and Salads'},{'name':'International'},{'name':'Asian'},{'name':'Chinese'},{'name':'Regional'},{'name':'Beverages', " +
-                "subMenuItems:[{'name':'Milk Shakes'},{'name':'Coffee'},{'name':'Tea'}," +
-                "{'name':'Others'}]}]}";
-        final MenuItem menu = gson.fromJson(json, MenuItem.class);
+        String menu_json = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString(Base
+                .MENU_ITEMS, Base.SAMPLE_MENU);
+        final MenuItem menu = gson.fromJson(menu_json, MenuItem.class);
 
-        final GridView grid = (GridView) view.findViewById(R.id.menu_items);
+        final GridView grid = (GridView) m_view.findViewById(R.id.menu_items);
         final List list=new ArrayList<String>();
         for(MenuItem item: menu.subMenuItems){
             list.add(item.name);
         }
         ArrayAdapter<String> adp=new ArrayAdapter<String> (getActivity(),
                 R.layout.menu_item_tile,list);
-        //grid.setNumColumns(3);
-        //grid.setBackgroundColor(Color.BLACK);
-        //grid.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         grid.setAdapter(adp);
 
-        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        //TODO back button
+        // What happens when FoodItems are clicked
+        class FoodItemOnClickListener implements AdapterView.OnItemClickListener {
 
             @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                                    long arg3) {
-                MenuItem clicked = menu.search((String)list.get(arg2));
-                if(clicked != null) {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                String item = (String) list.get(position);
+                TextView table_no = (TextView) m_view.findViewById(R.id.take_order_table_no);
+                TextView newItemCount = (TextView) m_view.findViewById(R.id.take_order_count);
+                if(table_no != null && newItemCount != null) {
+                    String table_no_value = table_no.getText().toString();
+                    int newItemCountValue = Integer.parseInt(newItemCount.getText().toString());
+
+                    long order_id = OrderManager.newOrderItem(getActivity(), table_no_value,
+                            newItemCountValue, item);
+                    ContentValues order = OrderManager.newOrderItemValue(getActivity(),
+                            table_no_value, newItemCountValue, item);
+                    order.put(OrderManager.ORDER_ID, order_id);
+                    m_food_items.add(order);
+                    refreshFoodItemList();
+                }
+            }
+        }
+
+        // when menu item is clicked
+        class MenuItemOnItemClickListener implements AdapterView.OnItemClickListener{
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                MenuItem clicked = menu.search((String) list.get(position));
+                if (clicked != null) {
                     list.clear();
                     if (clicked.subMenuItems != null) {
                         for (MenuItem subMenuItem : clicked.subMenuItems) {
@@ -84,14 +105,16 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                                         clicked.name)) {
                             list.add(food_menu_item.getAsString(ItemsManager.COLUMN_ITEM));
                             grid.setNumColumns(1);
-                            // TODO change onlick
+                            grid.setOnItemClickListener(new FoodItemOnClickListener());
 
                         }
                     }
                 }
                 grid.invalidateViews();
             }
-        });
+        }
+
+        grid.setOnItemClickListener(new MenuItemOnItemClickListener());
         /*
         new ShowcaseView.Builder(getActivity())
                 .setTarget(new ActionViewTarget(getActivity(), ActionViewTarget.Type.HOME))
@@ -102,11 +125,11 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                 */
 
         // GO BUTTON
-		ImageButton table_no_go = (ImageButton) view.findViewById(R.id.b_select_table);
+		ImageButton table_no_go = (ImageButton) m_view.findViewById(R.id.b_select_table);
 		table_no_go.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-                final TextView table_no = (TextView) view.findViewById(R.id.take_order_table_no) ;
+                final TextView table_no = (TextView) m_view.findViewById(R.id.take_order_table_no) ;
                 final String table_no_value = table_no.getText().toString();
 
                 if (table_no_value.isEmpty()){
@@ -117,20 +140,20 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                 }
 
                 try{
-                    ((ViewStub) view.findViewById(R.id.stub_import_order_items_load)).inflate();
+                    ((ViewStub) m_view.findViewById(R.id.stub_import_order_items_load)).inflate();
                 } catch (Exception e){}
 
-                food_items = OrderManager.getAllItemsFromTable(getActivity(), OrderManager.COLUMN_TABLE_NO + " = " + table_no_value);
+                m_food_items = OrderManager.getAllItemsFromTable(getActivity(), OrderManager.COLUMN_TABLE_NO + " = " + table_no_value);
                 refreshFoodItemList();
 
-                final TextView newItemCount = (TextView) view.findViewById(R.id.take_order_count);
+                final TextView newItemCount = (TextView) m_view.findViewById(R.id.take_order_count);
 
                 // ADD ITEM BUTTON CLICK
                 /*
-                ImageButton add_item = (ImageButton) view.findViewById(R.id.take_order_add_item_button);
+                ImageButton add_item = (ImageButton) m_view.findViewById(R.id.take_order_add_item_button);
                 add_item.setOnClickListener(new OnClickListener() {
                     @Override
-                    public void onClick(View view) {
+                    public void onClick(View m_view) {
                         String newItemValue = take_order_add_item.getText().toString();
                         int newItemCountValue = Integer.parseInt(newItemCount.getText().toString());
 
@@ -139,7 +162,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                             long order_id = OrderManager.newOrderItem(getActivity(),table_no_value, newItemCountValue, newItemValue);
                             ContentValues order = OrderManager.newOrderItemValue(getActivity(), table_no_value, newItemCountValue, newItemValue);
                             order.put(OrderManager.ORDER_ID, order_id);
-                            food_items.add(order);
+                            m_food_items.add(order);
                             refreshFoodItemList();
                             take_order_add_item.setText("");
                         }
@@ -153,19 +176,19 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                 */
 
                 // SUBMIT BUTTON CLICK
-                Button submit_button = (Button) view.findViewById(R.id.submit_bill);
+                Button submit_button = (Button) m_view.findViewById(R.id.submit_bill);
                 submit_button.setOnClickListener( new OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         new DataSender(getActivity()).submit_order(table_no_value);
                         OrderManager.submit_order(getActivity(), table_no_value);
-                        food_items = OrderManager.getAllItemsFromTable(getActivity(), OrderManager.COLUMN_TABLE_NO +" = "+table_no_value);
+                        m_food_items = OrderManager.getAllItemsFromTable(getActivity(), OrderManager.COLUMN_TABLE_NO +" = "+table_no_value);
                         refreshFoodItemList();
                     }
                 });
 
                 // MAKE BILL BUTTON
-                Button bill_button = (Button) view.findViewById(R.id.make_bill);
+                Button bill_button = (Button) m_view.findViewById(R.id.make_bill);
                 bill_button.setOnClickListener( new OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -176,11 +199,11 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                 });
             }
         });
-        return view;
+        return m_view;
 	}
 	
 	public SwipeDismissTouchListener touchListener(final TextView food_list_item){
-        final TextView table_no = (TextView) view.findViewById(R.id.take_order_table_no) ;
+        final TextView table_no = (TextView) m_view.findViewById(R.id.take_order_table_no) ;
         return new SwipeDismissTouchListener(
                 food_list_item,null,
                 new SwipeDismissTouchListener.DismissCallbacks() {
@@ -191,7 +214,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
 
                     @Override
                     public void onDismiss(View view, Object token) {
-                        itemsContainer.removeView(food_list_item);
+                        m_itemsContainer.removeView(food_list_item);
 
                         // inform kitchen
                         if(Integer.parseInt(OrderManager.getColumn(getActivity(),
@@ -203,7 +226,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                         OrderManager.deleteOrderItem(getActivity(), food_list_item.getId());
 
                         String table_no_value = table_no.getText().toString();
-                        food_items = OrderManager.getAllItemsFromTable(getActivity(), OrderManager.COLUMN_TABLE_NO +" = "+ table_no_value);
+                        m_food_items = OrderManager.getAllItemsFromTable(getActivity(), OrderManager.COLUMN_TABLE_NO +" = "+ table_no_value);
                         refreshFoodItemList();
 
                     }
@@ -246,7 +269,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
     // Todo pass data as an argument
     public void refreshFoodItemList(){
         try {
-            itemsContainer.removeAllViews();
+            m_itemsContainer.removeAllViews();
         } catch (Exception e){}
 
         ListView listView = new ListView(getActivity());
@@ -270,8 +293,8 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
         listView.setOnScrollListener(touchListener.makeScrollListener());
 
         // Set up normal ViewGroup example
-        itemsContainer  = (ViewGroup) view.findViewById(R.id.take_order_dismissable_container);
-        for (ContentValues item : food_items) {
+        m_itemsContainer = (ViewGroup) m_view.findViewById(R.id.take_order_dismissable_container);
+        for (ContentValues item : m_food_items) {
             TextView food_list_item = FoodListItem(
                     item.getAsString(OrderManager.COLUMN_ORDER_ITEM),
                     item.getAsInteger(OrderManager.COLUMN_ITEM_COUNT),
@@ -279,7 +302,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                     item.getAsString(OrderManager.COLUMN_DIRECTIONS),
                     item.getAsInteger(OrderManager.ORDER_ID)
             );
-            itemsContainer.addView(food_list_item);
+            m_itemsContainer.addView(food_list_item);
         }
     }
 
@@ -300,8 +323,8 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                 String directionsValue = directionsBox.getText().toString();
                 if (!directionsValue.equals(oldDirections)) {
                     OrderManager.updateOrder(getActivity(), order_id, OrderManager.COLUMN_DIRECTIONS, directionsValue);
-                    String table_no_value = ((TextView) view.findViewById(R.id.take_order_table_no)).getText().toString();
-                    food_items = OrderManager.getAllItemsFromTable(getActivity(), OrderManager.COLUMN_TABLE_NO + " = " + table_no_value);
+                    String table_no_value = ((TextView) m_view.findViewById(R.id.take_order_table_no)).getText().toString();
+                    m_food_items = OrderManager.getAllItemsFromTable(getActivity(), OrderManager.COLUMN_TABLE_NO + " = " + table_no_value);
                     refreshFoodItemList();
                     // send kitchen
                     new DataSender(getActivity()).send_directions(order_id,directionsValue);
