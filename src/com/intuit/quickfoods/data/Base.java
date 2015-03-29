@@ -11,6 +11,7 @@ public final class Base {
     public static String FTU_HELP_DISABLED= "FTU Help Disabled";
     public static String IS_KITCHEN = "is_kitchen";
     public static String MENU_ITEMS = "menu items";
+    public static String MAX_TABLES = "max_tables";
 
     public static String take_order = "Take Order";
     public static String items = "Items";
@@ -42,6 +43,9 @@ public final class Base {
             R.drawable.black_blue_border,
             R.drawable.black_green_border
     };
+
+    public static int COLOR_NON_VEG = ITEM_BORDER[0];
+    public static int COLOR_VEG = ITEM_BORDER[2];
 
     // data will be like command^1`2`3~4`5`6
     public static String DELIMITER_COMMAND = "^";

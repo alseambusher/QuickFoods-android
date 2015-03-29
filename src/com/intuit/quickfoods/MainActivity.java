@@ -42,7 +42,7 @@ public class MainActivity extends ActionBarActivity implements
 
     public Intent mQuickFoodsServiceIntent;
     public IQuickFoodsService mIQuickFoodsService;
-    SharedPreferences prefs;
+    private SharedPreferences prefs;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

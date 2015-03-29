@@ -12,7 +12,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.intuit.quickfoods.data.Base;
-import com.intuit.quickfoods.data.OrderManager;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -47,7 +46,8 @@ public class PlaceholderTables extends PlaceholderBase {
         });
         //fab.attachToListView(lview);
 
-        List<Base.Table> tables = OrderManager.getTables(getActivity());
+        List<Base.Table> tables = null;
+        //List<Base.Table> tables = OrderManager.getTables(getActivity());
 
         final List<String> list = new ArrayList<>();
         Map<String,Integer> status = new HashMap<>();

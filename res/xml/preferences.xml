@@ -11,8 +11,10 @@
         android:summary="Check if the client is Kitchen"
         android:defaultValue="true" />
     <EditTextPreference
-        android:key="ip_address"
-        android:title="Client IP" />
+        android:key="max_tables"
+        android:title="Maximum number of tables"
+        android:summary="Tables are numbered 1 to this number"
+        android:defaultValue="@string/default_max_tables"/>
     <EditTextPreference
         android:key="kitchen_port"
         android:title="Kitchen Port"

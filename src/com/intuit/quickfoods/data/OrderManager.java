@@ -5,8 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.intuit.quickfoods.data.Base;
-import com.intuit.quickfoods.data.ItemsManager;
 import com.intuit.quickfoods.helpers.DbHelper;
 
 import java.util.ArrayList;
@@ -157,15 +155,21 @@ public class OrderManager {
         db.update(TABLE_ORDER, container, ORDER_ID +" = "+ order_id, null);
         db.close();
     }
-    public static List<Base.Table> getTables(Context context){
-        List<ContentValues> values = getAllItemsFromTable(context,"");
-        // TODO filter
+    public static List<String> getTables(Context context){
+        SQLiteDatabase db = new DbHelper(context).getWritableDatabase();
+        List<String> tables = new ArrayList<>();
+        Cursor cursor = db.query(TABLE_ORDER, new String[] {COLUMN_TABLE_NO}, null, null, COLUMN_TABLE_NO,
+                null,
+                COLUMN_TABLE_NO);
 
-        List<Base.Table> tables = new ArrayList<>();
-
-        for(ContentValues value: values){
-           tables.add(new Base.Table(value.getAsString(COLUMN_TABLE_NO), value.getAsInteger(COLUMN_STATUS)));
+        cursor.moveToFirst();
+         while (!cursor.isAfterLast()){
+            tables.add(cursor.getString(0));
+            cursor.moveToNext();
         }
+        cursor.close();
+        db.close();
+
         return tables;
     }
 }
