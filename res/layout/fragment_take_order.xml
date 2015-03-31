@@ -21,30 +21,6 @@
         android:orientation="vertical"
         android:showDividers="end">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/theme_background_dark">
-
-            <EditText
-                android:id="@+id/take_order_table_no"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.71"
-                android:ems="10"
-                android:hint="Table No."
-                android:inputType="number" />
-
-            <ImageButton
-                android:id="@+id/b_select_table"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:elevation="2dp"
-                android:ellipsize="start"
-                android:src="@android:drawable/ic_menu_send" />
-
-        </LinearLayout>
-
         <TextView
             android:id='@+id/menu_breadcrumbs'
             android:layout_width="match_parent"
@@ -73,7 +49,7 @@
         <ViewStub
             android:id="@+id/stub_import_order_items_load"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="500dp"
             android:layout_gravity="bottom"
             android:inflatedId="@+id/stub_order_items_load"
             android:layout="@layout/stub_order_items" />

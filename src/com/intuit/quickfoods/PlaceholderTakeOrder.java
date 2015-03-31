@@ -74,6 +74,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
         };
         menu_grid.setAdapter(adp);
         menu_grid.setOnItemClickListener(new TablesOnItemClickListener());
+        setNavigationTitle("Tables");
         /*
         new ShowcaseView.Builder(getActivity())
                 .setTarget(new ActionViewTarget(getActivity(), ActionViewTarget.Type.HOME))
@@ -85,6 +86,11 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
         return m_view;
     }
 
+    private void setNavigationTitle(String title){
+        TextView tv = (TextView) m_view.findViewById(R.id.menu_breadcrumbs);
+        tv.setText(title);
+    }
+
     // when m_menu item is clicked
     private class TablesOnItemClickListener implements AdapterView.OnItemClickListener {
 
@@ -93,10 +99,11 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
             // TODO take care of plus
             final String table_no = (String) m_menu_list.get(position);
             if(table_no.equals("+")){
+                setNavigationTitle("Free Tables");
                 List<String> open_table_list = new ArrayList<>();
                 SharedPreferences prefs = PreferenceManager
                         .getDefaultSharedPreferences
-                        (getActivity());
+                                (getActivity());
                 int max_tables = Integer.parseInt(prefs.getString(Base.MAX_TABLES,
                         getActivity().getResources()
                                 .getString(R.string.default_max_tables)));
@@ -110,6 +117,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
             }
             else {
                 m_table_no_selected = table_no;
+                setNavigationTitle("Table "+m_table_no_selected+" - Categories");
                 try {
                     ((ViewStub) m_view.findViewById(R.id.stub_import_order_items_load)).inflate();
                 } catch (Exception e) {
@@ -157,6 +165,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            setNavigationTitle("Table "+m_table_no_selected+" - "+ m_menu_list.get(position));
             MenuItem clicked = m_menu.search((String) m_menu_list.get(position));
             if (clicked != null) {
                 m_menu_list.clear();
@@ -171,9 +180,9 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                         m_menu_list.add(food_menu_item.getAsString(ItemsManager.COLUMN_ITEM));
 
                     }
+                    menu_grid.setNumColumns(1);
+                    menu_grid.setOnItemClickListener(new FoodItemOnClickListener());
                 }
-                menu_grid.setNumColumns(1);
-                menu_grid.setOnItemClickListener(new FoodItemOnClickListener());
             }
             menu_grid.invalidateViews();
         }
@@ -322,8 +331,8 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                 String directionsValue = directionsBox.getText().toString();
                 if (!directionsValue.equals(oldDirections)) {
                     OrderManager.updateOrder(getActivity(), order_id, OrderManager.COLUMN_DIRECTIONS, directionsValue);
-                    String table_no_value = ((TextView) m_view.findViewById(R.id.take_order_table_no)).getText().toString();
-                    m_food_items = OrderManager.getAllItemsFromTable(getActivity(), OrderManager.COLUMN_TABLE_NO + " = " + table_no_value);
+                    m_food_items = OrderManager.getAllItemsFromTable(getActivity(),
+                            OrderManager.COLUMN_TABLE_NO + " = " + m_table_no_selected);
                     refreshFoodItemList();
                     // send kitchen
                     new DataSender(getActivity()).send_directions(order_id, directionsValue);
@@ -338,5 +347,10 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
             }
         });
         detailsDialog.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

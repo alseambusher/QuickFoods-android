@@ -1,7 +1,6 @@
 package com.intuit.quickfoods;
 
 
-import android.support.v7.app.ActionBar;
 import android.app.FragmentManager;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -12,6 +11,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,12 +28,12 @@ import java.util.Arrays;
 public class MainActivity extends ActionBarActivity implements
 		NavigationDrawer.NavigationDrawerCallbacks {
 
-	/**
+    /**
 	 * Fragment managing the behaviors, interactions and presentation of the
 	 * navigation drawer.
 	 */
 	private NavigationDrawer mNavigationDrawerFragment;
-
+    private PlaceholderBase mActivePlaceHolder;
 	/**
 	 * Used to store the last screen title. For use in
 	 * {@link #restoreActionBar()}.
@@ -146,28 +146,27 @@ public class MainActivity extends ActionBarActivity implements
 		mTitle = Base.nav_drawer_items[position];
 
 		if (mTitle == Base.take_order) {
-			fragmentManager.beginTransaction().replace(R.id.container,
-							new PlaceholderTakeOrder()).commit();
+            mActivePlaceHolder = new PlaceholderTakeOrder();
 		}
         else if (mTitle == Base.tables) {
-            fragmentManager.beginTransaction().replace(R.id.container,
-                    new PlaceholderTables()).commit();
+            mActivePlaceHolder = new PlaceholderTables();
         }
 		else if (mTitle == Base.items){
-			fragmentManager.beginTransaction().replace(R.id.container,
-                    new PlaceholderItems()).commit();
+            mActivePlaceHolder = new PlaceholderItems();
 		}
         else if (mTitle == Base.kitchen){
-            fragmentManager.beginTransaction().replace(R.id.container,
-                    new PlaceholderKitchen()).commit();
+            mActivePlaceHolder = new PlaceholderKitchen();
         }
         else if (mTitle == Base.history){
-            fragmentManager.beginTransaction().replace(R.id.container,
-                    new PlaceholderHistory()).commit();
+            mActivePlaceHolder = new PlaceholderHistory();
         }
         else if (mTitle == Base.review){
+            mActivePlaceHolder = new PlaceholderReviews();
+        }
+
+        if(mActivePlaceHolder != null){
             fragmentManager.beginTransaction().replace(R.id.container,
-                    new PlaceholderReviews()).commit();
+                    mActivePlaceHolder).commit();
         }
 		else {
 			/*
@@ -216,6 +215,16 @@ public class MainActivity extends ActionBarActivity implements
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+    @Override
+    public void onBackPressed() {
+        if(mActivePlaceHolder != null){
+            mActivePlaceHolder.onBackPressed();
+        }
+        else{
+            super.onBackPressed();
+        }
+    }
 
     @Override
     protected void onDestroy() {

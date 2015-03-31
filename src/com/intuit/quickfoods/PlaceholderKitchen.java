@@ -90,7 +90,6 @@ public class PlaceholderKitchen extends PlaceholderBase {
     }
 
     public SwipeDismissTouchListener touchListener(final TextView food_list_item){
-        final TextView table_no = (TextView) view.findViewById(R.id.take_order_table_no) ;
         return new SwipeDismissTouchListener(
                 food_list_item,null,
                 new SwipeDismissTouchListener.DismissCallbacks() {
