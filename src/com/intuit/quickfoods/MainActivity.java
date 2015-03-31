@@ -33,6 +33,8 @@ public class MainActivity extends ActionBarActivity implements
 	 * navigation drawer.
 	 */
 	private NavigationDrawer mNavigationDrawerFragment;
+
+    // holds the current fragment
     private PlaceholderBase mActivePlaceHolder;
 	/**
 	 * Used to store the last screen title. For use in

@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,9 +39,14 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
     private ViewGroup m_itemsContainer; // placeholder for items container
     private List<ContentValues> m_food_items; // items added to order list
     private GridView menu_grid; // placeholder for m_menu
-    private List m_menu_list; // elements in the grid
+    private List<String> m_menu_list; // elements in the grid
     private MenuItem m_menu; // menu taken from json
     private String m_table_no_selected;
+    private int mDefaultGridColumnNos;
+
+    // to manage back button
+    private List<OnItemClickListener> mItemClickListenerHistory = new ArrayList<>();
+    private List<List> mMenuListHistory = new ArrayList<>();
 
     public PlaceholderTakeOrder() {
         super();
@@ -58,13 +64,14 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
         m_menu = gson.fromJson(menu_json, MenuItem.class);
 
         menu_grid = (GridView) m_view.findViewById(R.id.menu_items);
-        m_menu_list = new ArrayList<String>();
-        for(String table: OrderManager.getTables(getActivity())){
+        mDefaultGridColumnNos = menu_grid.getNumColumns();
+        m_menu_list = new ArrayList<>();
+        for (String table : OrderManager.getTables(getActivity())) {
             m_menu_list.add(table);
         }
         m_menu_list.add("+");
         ArrayAdapter<String> adp = new ArrayAdapter<String>(getActivity(),
-                R.layout.menu_item_tile, m_menu_list){
+                R.layout.menu_item_tile, m_menu_list) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
@@ -86,20 +93,20 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
         return m_view;
     }
 
-    private void setNavigationTitle(String title){
+    private void setNavigationTitle(String title) {
         TextView tv = (TextView) m_view.findViewById(R.id.menu_breadcrumbs);
         tv.setText(title);
     }
 
     // when m_menu item is clicked
-    private class TablesOnItemClickListener implements AdapterView.OnItemClickListener {
+    private class TablesOnItemClickListener implements OnItemClickListener {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            // TODO take care of plus
+            addHistory(this);
+
             final String table_no = (String) m_menu_list.get(position);
-            if(table_no.equals("+")){
-                setNavigationTitle("Free Tables");
+            if (table_no.equals("+")) {
                 List<String> open_table_list = new ArrayList<>();
                 SharedPreferences prefs = PreferenceManager
                         .getDefaultSharedPreferences
@@ -107,19 +114,22 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                 int max_tables = Integer.parseInt(prefs.getString(Base.MAX_TABLES,
                         getActivity().getResources()
                                 .getString(R.string.default_max_tables)));
-                for (int i = 1; i <= max_tables; i++){
-                    if(!m_menu_list.contains(String.valueOf(i))){
+                for (int i = 1; i <= max_tables; i++) {
+                    if (!m_menu_list.contains(String.valueOf(i))) {
                         open_table_list.add(String.valueOf(i));
                     }
                 }
                 m_menu_list.clear();
                 m_menu_list.addAll(open_table_list);
-            }
-            else {
+            } else {
                 m_table_no_selected = table_no;
-                setNavigationTitle("Table "+m_table_no_selected+" - Categories");
                 try {
-                    ((ViewStub) m_view.findViewById(R.id.stub_import_order_items_load)).inflate();
+                    // if stub is not inflated then inflate it, else just set visibility to visible
+                    if(m_view.findViewById(R.id.stub_import_order_items_load) != null)
+                        ((ViewStub) m_view.findViewById(R.id.stub_import_order_items_load)).inflate();
+                    else
+                        m_view.findViewById(R.id.stub_import_order_items_load).setVisibility(View
+                                .VISIBLE);
                 } catch (Exception e) {
                 }
 
@@ -156,17 +166,30 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
 
                 menu_grid.setOnItemClickListener(new MenuItemOnItemClickListener());
             }
+            setProperties();
             menu_grid.invalidateViews();
+        }
+
+        public void setProperties(){
+            if(m_table_no_selected == "")
+                setNavigationTitle("Free Tables");
+            else
+                setNavigationTitle("Table " + m_table_no_selected + " - Categories");
+            menu_grid.setNumColumns(mDefaultGridColumnNos);
         }
     }
 
     // when m_menu item is clicked
-    private class MenuItemOnItemClickListener implements AdapterView.OnItemClickListener {
+    private class MenuItemOnItemClickListener implements OnItemClickListener {
+        private String mNavigationTitle;
+        private int mColumns = mDefaultGridColumnNos;
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            setNavigationTitle("Table "+m_table_no_selected+" - "+ m_menu_list.get(position));
-            MenuItem clicked = m_menu.search((String) m_menu_list.get(position));
+            addHistory(this);
+
+            mNavigationTitle = "Table " + m_table_no_selected + " - " + m_menu_list.get(position);
+            MenuItem clicked = m_menu.search(m_menu_list.get(position));
             if (clicked != null) {
                 m_menu_list.clear();
                 if (clicked.subMenuItems != null) {
@@ -174,27 +197,33 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                         m_menu_list.add(subMenuItem.name);
                     }
                 } else {
+                    mColumns = 1;
                     for (ContentValues food_menu_item : ItemsManager.getAllItemsForCategory
                             (getActivity(),
                                     clicked.name)) {
                         m_menu_list.add(food_menu_item.getAsString(ItemsManager.COLUMN_ITEM));
 
                     }
-                    menu_grid.setNumColumns(1);
                     menu_grid.setOnItemClickListener(new FoodItemOnClickListener());
                 }
             }
+            setProperties();
             menu_grid.invalidateViews();
+        }
+
+        public void setProperties(){
+            menu_grid.setNumColumns(mColumns);
+            setNavigationTitle(mNavigationTitle);
+
         }
     }
 
-    //TODO back button
     // What happens when FoodItems are clicked
-    private class FoodItemOnClickListener implements AdapterView.OnItemClickListener {
+    private class FoodItemOnClickListener implements OnItemClickListener {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-            String item = (String) m_menu_list.get(position);
+            String item = m_menu_list.get(position);
             TextView newItemCount = (TextView) m_view.findViewById(R.id.take_order_count);
             if (newItemCount != null) {
                 int newItemCountValue = Integer.parseInt(newItemCount.getText().toString());
@@ -273,7 +302,6 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
         return food_list_item;
     }
 
-    // Todo pass data as an argument
     public void refreshFoodItemList() {
         try {
             m_itemsContainer.removeAllViews();
@@ -349,8 +377,39 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
         detailsDialog.show();
     }
 
+    private void addHistory(OnItemClickListener listener) {
+        // add to history
+        mItemClickListenerHistory.add(listener);
+        List<String> current_menu_list = new ArrayList();
+        for (String item : m_menu_list)
+            current_menu_list.add(item);
+        mMenuListHistory.add(current_menu_list);
+    }
+
     @Override
     public void onBackPressed() {
+        if (mMenuListHistory.size() > 0 && mItemClickListenerHistory.size() > 0) {
+            m_menu_list.clear();
+            m_menu_list.addAll(mMenuListHistory.remove(mMenuListHistory.size() - 1));
+
+            OnItemClickListener listener = mItemClickListenerHistory.remove
+                    (mItemClickListenerHistory.size() - 1);
+            if(listener instanceof TablesOnItemClickListener) {
+                ((TablesOnItemClickListener) listener).setProperties();
+                // clear table id
+                m_table_no_selected = "";
+                // hide order
+                m_view.findViewById(R.id.stub_import_order_items_load).setVisibility(View
+                        .GONE);
+            }
+            else if(listener instanceof MenuItemOnItemClickListener){
+                ((MenuItemOnItemClickListener) listener).setProperties();
+            }
+
+            menu_grid.setOnItemClickListener(listener);
+            menu_grid.invalidateViews();
+        }
+        // TODO if back is pressed from tables page, ask if you want to exit
         super.onBackPressed();
     }
 }
