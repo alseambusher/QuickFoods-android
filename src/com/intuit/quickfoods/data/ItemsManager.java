@@ -120,9 +120,12 @@ public class ItemsManager {
         }
     }
 
-    public static String getCategory(Context context, String item){
+    // pass column and item name
+    public static String getColumn(Context context, String column, String item){
         SQLiteDatabase db = new DbHelper(context).getReadableDatabase();
-        Cursor cursor = db.query(TABLE_ITEMS, new String[]{COLUMN_CATEGORY}, COLUMN_ITEM + " = '" + item + "'", null, null, null, null);
+        Cursor cursor = db.query(TABLE_ITEMS, new String[]{column}, COLUMN_ITEM + " = '" + item +
+                        "'",
+                null, null, null, null);
         cursor.moveToFirst();
         if (!cursor.isAfterLast()) {
             String category = cursor.getString(0);
@@ -135,5 +138,13 @@ public class ItemsManager {
             db.close();
             return null;
         }
+    }
+
+    public static String getCategory(Context context, String item){
+        return getColumn(context, COLUMN_CATEGORY, item);
+    }
+
+    public static String getDescription(Context context, String item){
+        return getColumn(context, COLUMN_DESCRIPTION, item);
     }
 }
