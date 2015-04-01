@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
@@ -24,7 +25,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.intuit.quickfoods.data.Base;
 import com.intuit.quickfoods.data.ItemsManager;
-import com.intuit.quickfoods.data.MenuItem;
+import com.intuit.quickfoods.data.FoodMenuItem;
 import com.intuit.quickfoods.data.OrderManager;
 import com.intuit.quickfoods.helpers.BillPrinterManager;
 import com.intuit.quickfoods.helpers.DataSender;
@@ -33,6 +34,7 @@ import com.intuit.quickfoods.helpers.SwipeDismissTouchListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class PlaceholderTakeOrder extends PlaceholderBase {
     private View m_view;
@@ -40,9 +42,11 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
     private List<ContentValues> m_food_items; // items added to order list
     private GridView menu_grid; // placeholder for m_menu
     private List<String> m_menu_list; // elements in the grid
-    private MenuItem m_menu; // menu taken from json
+    private FoodMenuItem m_menu; // menu taken from json
     private String m_table_no_selected;
-    private int mDefaultGridColumnNos;
+    private int mDefaultGridColumnNos = -1;
+    private View mOrderStub;
+    private List<Integer> mMenuGridColors = new ArrayList<>();
 
     // to manage back button
     private List<OnItemClickListener> mItemClickListenerHistory = new ArrayList<>();
@@ -61,21 +65,21 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
         String menu_json = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString(Base
                 .MENU_ITEMS, Base.SAMPLE_MENU);
         Gson gson = new Gson();
-        m_menu = gson.fromJson(menu_json, MenuItem.class);
+        m_menu = gson.fromJson(menu_json, FoodMenuItem.class);
 
         menu_grid = (GridView) m_view.findViewById(R.id.menu_items);
-        mDefaultGridColumnNos = menu_grid.getNumColumns();
         m_menu_list = new ArrayList<>();
-        for (String table : OrderManager.getTables(getActivity())) {
-            m_menu_list.add(table);
-        }
-        m_menu_list.add("+");
+        setFirstPageGridElements();
+
         ArrayAdapter<String> adp = new ArrayAdapter<String>(getActivity(),
                 R.layout.menu_item_tile, m_menu_list) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
-                // TODO set colors here
+                if (mMenuGridColors.get(position) != null) {
+                    TextView tile = (TextView) view.findViewById(R.id.menu_item_element);
+                    tile.setBackgroundColor(mMenuGridColors.get(position));
+                }
                 return view;
             }
         };
@@ -93,6 +97,35 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
         return m_view;
     }
 
+    private void setGridColors(Boolean isRandom) {
+        mMenuGridColors.clear();
+        Random rnd = new Random();
+        for (int i = 0; i < m_menu_list.size(); i++) {
+            int color;
+            if (isRandom) {
+                color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+            } else {
+                FoodMenuItem foodMenuItem = m_menu.search(m_menu_list.get(i));
+                if (foodMenuItem == null) {
+                    // TODO set veg and non veg color
+                    color = Color.BLUE;
+                } else {
+                    color = foodMenuItem.color;
+                }
+            }
+            mMenuGridColors.add(color);
+        }
+    }
+
+    private void setFirstPageGridElements() {
+        m_menu_list.clear();
+        for (String table : OrderManager.getTables(getActivity())) {
+            m_menu_list.add(table);
+        }
+        m_menu_list.add("+");
+        setGridColors(true);
+    }
+
     private void setNavigationTitle(String title) {
         TextView tv = (TextView) m_view.findViewById(R.id.menu_breadcrumbs);
         tv.setText(title);
@@ -100,12 +133,14 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
 
     // when m_menu item is clicked
     private class TablesOnItemClickListener implements OnItemClickListener {
+        private boolean isBackPressed = false;
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            addHistory(this);
+            if (mMenuListHistory.size() == 0)
+                addHistory(this);
 
-            final String table_no = (String) m_menu_list.get(position);
+            final String table_no = m_menu_list.get(position);
             if (table_no.equals("+")) {
                 List<String> open_table_list = new ArrayList<>();
                 SharedPreferences prefs = PreferenceManager
@@ -123,14 +158,13 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                 m_menu_list.addAll(open_table_list);
             } else {
                 m_table_no_selected = table_no;
-                try {
-                    // if stub is not inflated then inflate it, else just set visibility to visible
-                    if(m_view.findViewById(R.id.stub_import_order_items_load) != null)
-                        ((ViewStub) m_view.findViewById(R.id.stub_import_order_items_load)).inflate();
-                    else
-                        m_view.findViewById(R.id.stub_import_order_items_load).setVisibility(View
-                                .VISIBLE);
-                } catch (Exception e) {
+                // if stub is not inflated then inflate it, else just set visibility to visible
+                if (mOrderStub == null) {
+                    mOrderStub = ((ViewStub) m_view.findViewById(R.id
+                            .stub_import_order_items_load))
+                            .inflate();
+                } else {
+                    mOrderStub.setVisibility(View.VISIBLE);
                 }
 
                 m_food_items = OrderManager.getAllItemsFromTable(getActivity(), OrderManager.COLUMN_TABLE_NO + " = " + table_no);
@@ -160,7 +194,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                 });
 
                 m_menu_list.clear();
-                for (MenuItem item : m_menu.subMenuItems) {
+                for (FoodMenuItem item : m_menu.subMenuItems) {
                     m_menu_list.add(item.name);
                 }
 
@@ -170,31 +204,51 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
             menu_grid.invalidateViews();
         }
 
-        public void setProperties(){
-            if(m_table_no_selected == "")
+        public void setProperties() {
+            if (isBackPressed) {
+                // clear table id
+                m_table_no_selected = null;
+                setNavigationTitle("Tables");
+                setFirstPageGridElements();
+                // hide order
+                mOrderStub.setVisibility(View.GONE);
+                isBackPressed = false;
+            } else if (m_table_no_selected == null){
                 setNavigationTitle("Free Tables");
-            else
+                setGridColors(true);
+            }
+            else {
                 setNavigationTitle("Table " + m_table_no_selected + " - Categories");
+                setGridColors(false);
+            }
+            if (mDefaultGridColumnNos == -1)
+                mDefaultGridColumnNos = menu_grid.getNumColumns();
             menu_grid.setNumColumns(mDefaultGridColumnNos);
+        }
+
+        public void setBackPressed() {
+            isBackPressed = true;
+            setProperties();
         }
     }
 
     // when m_menu item is clicked
     private class MenuItemOnItemClickListener implements OnItemClickListener {
         private String mNavigationTitle;
-        private int mColumns = mDefaultGridColumnNos;
+        private int mColumns;
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             addHistory(this);
 
             mNavigationTitle = "Table " + m_table_no_selected + " - " + m_menu_list.get(position);
-            MenuItem clicked = m_menu.search(m_menu_list.get(position));
+            FoodMenuItem clicked = m_menu.search(m_menu_list.get(position));
             if (clicked != null) {
                 m_menu_list.clear();
                 if (clicked.subMenuItems != null) {
-                    for (MenuItem subMenuItem : clicked.subMenuItems) {
-                        m_menu_list.add(subMenuItem.name);
+                    mColumns = mDefaultGridColumnNos;
+                    for (FoodMenuItem subFoodMenuItem : clicked.subMenuItems) {
+                        m_menu_list.add(subFoodMenuItem.name);
                     }
                 } else {
                     mColumns = 1;
@@ -207,14 +261,17 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                     menu_grid.setOnItemClickListener(new FoodItemOnClickListener());
                 }
             }
+
             setProperties();
             menu_grid.invalidateViews();
         }
 
-        public void setProperties(){
+        public void setProperties() {
+            setGridColors(false);
             menu_grid.setNumColumns(mColumns);
             setNavigationTitle(mNavigationTitle);
-
+            // reset mColumns to handle back button
+            mColumns = mDefaultGridColumnNos;
         }
     }
 
@@ -394,15 +451,9 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
 
             OnItemClickListener listener = mItemClickListenerHistory.remove
                     (mItemClickListenerHistory.size() - 1);
-            if(listener instanceof TablesOnItemClickListener) {
-                ((TablesOnItemClickListener) listener).setProperties();
-                // clear table id
-                m_table_no_selected = "";
-                // hide order
-                m_view.findViewById(R.id.stub_import_order_items_load).setVisibility(View
-                        .GONE);
-            }
-            else if(listener instanceof MenuItemOnItemClickListener){
+            if (listener instanceof TablesOnItemClickListener) {
+                ((TablesOnItemClickListener) listener).setBackPressed();
+            } else if (listener instanceof MenuItemOnItemClickListener) {
                 ((MenuItemOnItemClickListener) listener).setProperties();
             }
 

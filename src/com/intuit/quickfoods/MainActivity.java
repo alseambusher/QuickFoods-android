@@ -19,7 +19,9 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import com.google.gson.Gson;
 import com.intuit.quickfoods.data.Base;
+import com.intuit.quickfoods.data.FoodMenuItem;
 import com.intuit.quickfoods.helpers.DbHelper;
 import com.intuit.quickfoods.helpers.NavigationDrawer;
 
@@ -60,7 +62,10 @@ public class MainActivity extends ActionBarActivity implements
         // TODO download menu items from the server and store that instead of sample menu items
         if(!prefs.contains(Base.MENU_ITEMS)){
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putString(Base.MENU_ITEMS, Base.SAMPLE_MENU);
+            Gson gson = new Gson();
+            FoodMenuItem menu= gson.fromJson(Base.SAMPLE_MENU, FoodMenuItem.class);
+            menu.setRandomColors();
+            editor.putString(Base.MENU_ITEMS, gson.toJson(menu));
             editor.commit();
         }
         // if it is first time
@@ -150,9 +155,6 @@ public class MainActivity extends ActionBarActivity implements
 		if (mTitle == Base.take_order) {
             mActivePlaceHolder = new PlaceholderTakeOrder();
 		}
-        else if (mTitle == Base.tables) {
-            mActivePlaceHolder = new PlaceholderTables();
-        }
 		else if (mTitle == Base.items){
             mActivePlaceHolder = new PlaceholderItems();
 		}

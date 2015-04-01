@@ -18,7 +18,6 @@ public final class Base {
     public static String kitchen = "Kitchen";
     public static String history = "History";
     public static String review = "Reviews";
-    public static String tables = "Tables";
 
     public static String VEG = "veg";
     public static String NON_VEG = "non veg";
@@ -28,7 +27,7 @@ public final class Base {
             "{'name':'Others'}]}]}";
 
     // if you change this order the todal order will change
-    public static String[] nav_drawer_items = new String[]{take_order, tables, items,
+    public static String[] nav_drawer_items = new String[]{take_order, items,
             kitchen, history};
 
     // colors

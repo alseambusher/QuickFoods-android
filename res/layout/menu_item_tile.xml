@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/menu_item"
+    android:id="@+id/menu_item_element"
     android:layout_height="100dp"
     android:layout_width="match_parent"
     android:text="sample text"
