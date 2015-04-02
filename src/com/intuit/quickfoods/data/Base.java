@@ -43,7 +43,7 @@ public final class Base {
             R.drawable.black_green_border
     };
 
-    public static int COLOR_NON_VEG = ITEM_BORDER[0];
+    public static int COLOR_NON_VEG = R.drawable.red_button;
     public static int COLOR_VEG = ITEM_BORDER[2];
 
     // data will be like command^1`2`3~4`5`6

@@ -49,7 +49,7 @@
         <ViewStub
             android:id="@+id/stub_import_order_items_load"
             android:layout_width="fill_parent"
-            android:layout_height="500dp"
+            android:layout_height="350dp"
             android:layout_gravity="bottom"
             android:inflatedId="@+id/stub_order_items_load"
             android:layout="@layout/stub_order_items" />
