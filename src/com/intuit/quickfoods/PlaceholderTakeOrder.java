@@ -443,7 +443,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
     private class FoodListItemView {
         public TextView mFoodItemView, mItemCountView;
 
-        FoodListItemView(final String itemValue, int count, int itemStatus,
+        FoodListItemView(final String itemValue, final int count, int itemStatus,
                                            String directions, final int order_id) {
 
             mFoodItemView = new TextView(getActivity());
@@ -462,7 +462,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
                 mItemCountView.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        setItemCountDialog();
+                        setItemCountDialog(order_id, count);
                     }
                 });
             }
@@ -516,6 +516,7 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
             final EditText directionsBox = new EditText(getActivity());
             // load the previously entered
             directionsBox.setText(OrderManager.getColumn(getActivity(), order_id, OrderManager.COLUMN_DIRECTIONS));
+            directionsBox.selectAll();
             detailsDialog.setView(directionsBox);
 
             detailsDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -542,8 +543,40 @@ public class PlaceholderTakeOrder extends PlaceholderBase {
             });
             detailsDialog.show();
         }
-        private void setItemCountDialog(){
+        private void setItemCountDialog(final int order_id, int count){
+            AlertDialog.Builder countDialog = new AlertDialog.Builder(getActivity());
+            countDialog.setTitle("Count");
+            countDialog.setMessage("Directions");
 
+            final EditText countBox = new EditText(getActivity());
+            //TODO set keyboard type
+            countBox.setText(""+count);
+            countBox.selectAll();
+            countDialog.setView(countBox);
+
+            countDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    String oldDirections = OrderManager.getColumn(getActivity(), order_id,
+                            OrderManager.COLUMN_ITEM_COUNT);
+                    String directionsValue = countBox.getText().toString();
+                    if (!directionsValue.equals(oldDirections)) {
+                        OrderManager.updateOrder(getActivity(), order_id, OrderManager.COLUMN_ITEM_COUNT,
+                                directionsValue);
+                        mFoodItems = OrderManager.getAllItemsFromTable(getActivity(),
+                                OrderManager.COLUMN_TABLE_NO + " = " + m_table_no_selected);
+                        refreshFoodItemList();
+                    }
+                }
+            });
+
+            countDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    // do nothing
+                }
+            });
+            countDialog.show();
         }
     }
 
